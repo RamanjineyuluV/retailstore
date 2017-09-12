@@ -2,12 +2,10 @@ package com.myretailcompany.rest.controller;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.List;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +18,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.myretailcompany.dataaccesslayer.entity.Order;
 import com.myretailcompany.rest.controller.beans.OrderUpdateInfo;
-import com.myretailcompany.rest.controller.beans.ProductInfo;
 import com.myretailcompany.service.product.OrderService;
 import com.myretailcompany.util.OrderStatus;
 
@@ -59,9 +56,9 @@ public class OrderController {
 
 	@RequestMapping(value = "/orders/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<?> updateOrder(@RequestBody OrderUpdateInfo orderupdateInfo, @PathVariable Long id) throws IOException {
-		orderService.updateOrder(orderupdateInfo, id);
+		Order updated = orderService.updateOrder(orderupdateInfo, id);
 		logger.info("Request recieved =  " + orderupdateInfo);
-		return new ResponseEntity<>("{\"status\": \"success\"}",HttpStatus.OK);
+		return new ResponseEntity<>(updated,HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/orders/{id}", method = RequestMethod.DELETE)

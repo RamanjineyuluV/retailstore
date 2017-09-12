@@ -54,25 +54,24 @@ public class OrderService {
 		if (null==orderupdateInfo){
 			throw new ResourceNotFoundException("There is no information to be updated for id " + id ); // TODO: Add a new type of exception.
 		}
-		if  (orderupdateInfo.getStatus().equals(OrderStatus.COMPLETED)){
+		if  ((OrderStatus.COMPLETED).equals(orderupdateInfo.getStatus())){
 			// Order has been completed.  
 			
-		} else if (orderupdateInfo.getStatus().equals(OrderStatus.RELEASED)){
+		} else if ((OrderStatus.RELEASED).equals(orderupdateInfo.getStatus())){
 			// Add the products if any, compute the total value.Return the current order data.
 			
 			
-		}else if (orderupdateInfo.getStatus().equals(OrderStatus.CREATED)){
+		}else if ((OrderStatus.CREATED).equals(orderupdateInfo.getStatus())){
 			// Add the products and compute the total value as per current list. Return the current order data.
 		}
 		
 		//update the status of the order.
 		// return current object status
 		
-/*		
-		Order o1 = orderRepo.findOne(id)
+	
+		Order o1 = orderRepo.findOne(id);
 		logger.info("updated product id = " + o1.getId());
-		return o1;*/
-		return null;
+		return o1;
 	}
 
 	public void deleteOrder(Long id) {
