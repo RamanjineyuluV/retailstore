@@ -68,10 +68,11 @@ public class OrderService {
 		//update the status of the order.
 		// return current object status
 		
-		
+/*		
 		Order o1 = orderRepo.findOne(id)
 		logger.info("updated product id = " + o1.getId());
-		return o1;
+		return o1;*/
+		return null;
 	}
 
 	public void deleteOrder(Long id) {
