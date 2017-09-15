@@ -1,5 +1,6 @@
 package com.myretailcompany.dataaccesslayer.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -8,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.myretailcompany.util.ProductCategory;
 
@@ -44,6 +47,7 @@ public class Product {
 	private long id;
 	
 	@NotNull
+	@Column(unique=true)
 	private String barCodeId;
 	
 	@NotNull
@@ -88,4 +92,9 @@ public class Product {
 		this.productCategory = productCategory;
 	}
 
+	public String toString(){
+		return ToStringBuilder.reflectionToString(this);
+	}
+	
+	
 }

@@ -14,7 +14,7 @@ import com.myretailcompany.util.ProductCategory;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class RetaileStoreApplicationTests {
+public class RetailStoreApplicationTests {
 
 	@Autowired
 	private ProductRepository productMasterRepo;
@@ -32,5 +32,7 @@ public class RetaileStoreApplicationTests {
 		productMasterRepo.save(new Product("ABC-abc-1239", 49.0, "Banana", ProductCategory.C));
 		assertThat(productMasterRepo.count()).isEqualTo(6);
 	}
+	
+
 
 }

@@ -22,10 +22,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 	// TODO Security not working as expected. To debug
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		 http
+		 http.headers()
+		 	.frameOptions().disable().and() //fix to get h2-console working.
 		 	.authorizeRequests()
 	        .antMatchers("/v1/**", "/v2/**", "/swagger-ui/**", "/api-docs/**","/h2-console/**").permitAll()     //we don't want Sprint to protect these urls
-	        .antMatchers("/products/**").authenticated().and().httpBasic().realmName("mystore")
+	        .antMatchers("/products/**","/orders/**").authenticated().and().httpBasic().realmName("mystore")
 	        .and()
 	     .csrf()
 	        .disable();

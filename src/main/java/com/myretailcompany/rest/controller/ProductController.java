@@ -18,11 +18,20 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.myretailcompany.dataaccesslayer.entity.Product;
-import com.myretailcompany.service.product.ProductService;
+import com.myretailcompany.rest.controller.product.beans.ProductInfo;
+import com.myretailcompany.service.ProductService;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 
 // Entity Beans are used and returned by this call to web layer. Ideally they should be different.
 
 @RestController
+@Api(value="onlinestore",description="Operations pertaining to products in Online Store. Provide userid/password to authenticate")
 public class ProductController {
 
 	final Logger logger = LogManager.getLogger(getClass());
@@ -30,22 +39,42 @@ public class ProductController {
 	@Autowired
 	private ProductService productService;
 
-	// Read
+	
+	@ApiOperation(value = "View list of available products",response = Iterable.class,produces = "application/json")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully retrieved list"),
+            @ApiResponse(code = 401, message = "Bad Credentials")
+    }
+    )
 	@RequestMapping(value = "/products", method = RequestMethod.GET)
 	public ResponseEntity<Iterable<Product>> getAllProducts() {
 		return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
 	}
 
+	
+	
+	@ApiOperation(value = "View a specific product",response = Product.class,produces = "application/json")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully retrieved product details"),
+            @ApiResponse(code = 401, message = "Bad Credentials"),
+            @ApiResponse(code = 404, message = "Produt does not exist")
+    }
+    )	
 	@RequestMapping(value = "/products/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+	public ResponseEntity<Product> getProductById(@ApiParam(value = "id of a particular product", required = true) @PathVariable Long id) {
 		return new ResponseEntity<>(productService.getProductById(id), HttpStatus.OK);
 	}
 
-	// Create
+	@ApiOperation(value = "Create a new Product",response = String.class,produces = "application/json")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "id <id> created"),
+            @ApiResponse(code = 401, message = "Bad Credentials")
+    }
+    )	
 	@RequestMapping(value = "/products", method = RequestMethod.POST)
-	public ResponseEntity<?> createProduct(@Valid @RequestBody Product product) {
-		logger.info("Input recieved to create product = " + product);
-		product = productService.createProduct(product);
+	public ResponseEntity<Product> createProduct(@ApiParam(value = "Data for the new product", required = true) @Valid @RequestBody ProductInfo productInfo) {
+		logger.info("Input recieved to create product = " + productInfo);
+		Product product = productService.createProduct(productInfo);
 		logger.info("Created product with id = " + product.getId());
 
 		// Set the location header for the newly created resource
@@ -54,14 +83,14 @@ public class ProductController {
 				.toUri();
 		logger.info("Setting header url with newly created product= " + product.getId());
 		responseHeaders.setLocation(newPollUri);
-		return new ResponseEntity<>("{\"id\":"+product.getId()+"}", responseHeaders, HttpStatus.CREATED);
+		return new ResponseEntity<>(product, responseHeaders, HttpStatus.CREATED);
 	}
 
 	@RequestMapping(value = "/products/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<?> updateProduct(@RequestBody Product product, @PathVariable Long id) {
-		Product p = productService.updateProduct(product, id);
-		logger.info("updated product id = " + product.getId());
-		return new ResponseEntity<>("{\"status\": \"success\"}",HttpStatus.OK);
+	public ResponseEntity<Product> updateProduct( @Valid @RequestBody ProductInfo productInfo, @PathVariable Long id) {
+		Product prod = productService.updateProduct(productInfo, id);
+		logger.info("updated product id = " + prod.getId());
+		return new ResponseEntity<>(prod,HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/products/{id}", method = RequestMethod.DELETE)

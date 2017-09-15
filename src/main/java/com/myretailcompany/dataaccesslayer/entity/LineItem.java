@@ -1,12 +1,14 @@
 package com.myretailcompany.dataaccesslayer.entity;
 
-import javax.annotation.Generated;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 @Entity
 @Table (name="LINE_ITEM")
@@ -18,7 +20,7 @@ public class LineItem {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
-	@OneToOne
+	@OneToOne(fetch=FetchType.EAGER)
 	private Product product;
 	
 	private long quantity;	
@@ -64,6 +66,10 @@ public class LineItem {
 
 	public void setQuantity(long quantity) {
 		this.quantity = quantity;
+	}
+	
+	public String toString(){
+		return ToStringBuilder.reflectionToString(this);
 	}
 	
 	

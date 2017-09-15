@@ -13,7 +13,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -36,21 +38,20 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 		return customizeErrorMessage(ex, headers, status, request);
 	}
 
-	@ExceptionHandler(ResourceNotFoundException.class)
+	@ExceptionHandler(CustomException.class)
 	public ResponseEntity<?> handleResourceNotFoundException(Exception rnfe,
 			HttpServletRequest request) {
 
 			ErrorDetail errorDetail = new ErrorDetail();
 			errorDetail.setTimeStamp(new Date().getTime());
 			errorDetail.setStatus(HttpStatus.NOT_FOUND.value());
-			errorDetail.setTitle("Resource Not Found");
+			errorDetail.setTitle("Custom Exception");
 			errorDetail.setDetail(rnfe.getMessage());
 			errorDetail.setDeveloperMessage(rnfe.getClass().getName());
 			return new ResponseEntity<>(errorDetail, null, HttpStatus.NOT_FOUND);
 		
 	}
 
-	//TODO: Spring failing to start
 	//@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<?> handleValidationError(MethodArgumentNotValidException manve, HttpServletRequest request) {
 
@@ -87,6 +88,18 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
 	
 	
+	@Override
+	protected ResponseEntity<Object> handleHttpMediaTypeNotAcceptable(HttpMediaTypeNotAcceptableException ex,
+			HttpHeaders headers, HttpStatus status, WebRequest request) {
+		return customizeErrorMessage(ex, headers, status, request);
+	}
+
+	@Override
+	protected ResponseEntity<Object> handleHttpMessageNotWritable(HttpMessageNotWritableException ex,
+			HttpHeaders headers, HttpStatus status, WebRequest request) {
+		return customizeErrorMessage(ex, headers, status, request);
+	}
+
 	@Override
 	protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
