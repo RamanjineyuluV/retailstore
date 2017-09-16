@@ -6,68 +6,64 @@ import java.util.Map;
 
 public class ErrorDetail {
 
+	private String detail;
+
+	private String developerMessage;
+	private Map<String, List<ValidationError>> errors = new HashMap<>();
+	private int status;
+	private long timeStamp;
+	private String title;
 	public ErrorDetail() {
 		super();
-		// TODO Auto-generated constructor stub
-	}
 
-	private String title;
-    private int status;
-    private String detail;
-    private long timeStamp;
-    private String developerMessage;
-    private Map<String, List<ValidationError>> errors = new HashMap<String, List<ValidationError>>();
-
-    
-	public Map<String, List<ValidationError>> getErrors() {
-		return errors;
-	}
-
-	public void setErrors(Map<String, List<ValidationError>> errors) {
-		this.errors = errors;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public int getStatus() {
-		return status;
-	}
-
-	public void setStatus(int status) {
-		this.status = status;
 	}
 
 	public String getDetail() {
 		return detail;
 	}
 
-	public void setDetail(String detail) {
-		this.detail = detail;
+	public String getDeveloperMessage() {
+		return developerMessage;
+	}
+
+	public Map<String, List<ValidationError>> getErrors() {
+		return errors;
+	}
+
+	public int getStatus() {
+		return status;
 	}
 
 	public long getTimeStamp() {
 		return timeStamp;
 	}
 
-	public void setTimeStamp(long timeStamp) {
-		this.timeStamp = timeStamp;
+	public String getTitle() {
+		return title;
 	}
 
-	public String getDeveloperMessage() {
-		return developerMessage;
+	public void setDetail(String detail) {
+		this.detail = detail;
 	}
 
 	public void setDeveloperMessage(String developerMessage) {
 		this.developerMessage = developerMessage;
 	}
-	
-	
-    
-    
+
+	public void setErrors(Map<String, List<ValidationError>> errors) {
+		this.errors = errors;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public void setTimeStamp(long timeStamp) {
+		this.timeStamp = timeStamp;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
 }

@@ -1,20 +1,16 @@
 package com.myretailcompany.rest.controller;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
-import org.springframework.validation.FieldError;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -26,70 +22,34 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
-	
-	final Logger logger = LogManager.getLogger(getClass());
-	
-    private MessageSource messageSource;
-	
-    
+
+	final Logger customLogger = LogManager.getLogger(getClass());
+
+	private ResponseEntity<Object> customizeErrorMessage(Exception ex, HttpHeaders headers, HttpStatus status,
+			WebRequest request) {
+		ErrorDetail errorDetail = new ErrorDetail();
+		errorDetail.setTimeStamp(new Date().getTime());
+		errorDetail.setStatus(status.value());
+		errorDetail.setTitle(ex.getClass().getName());
+		errorDetail.setDetail(ex.getMessage());
+		errorDetail.setDeveloperMessage(ex.getClass().getName());
+		return handleExceptionInternal(ex, errorDetail, headers, status, request);
+	}
+
+	@Override
+	protected ResponseEntity<Object> handleHttpMediaTypeNotAcceptable(HttpMediaTypeNotAcceptableException ex,
+			HttpHeaders headers, HttpStatus status, WebRequest request) {
+		return customizeErrorMessage(ex, headers, status, request);
+	}
+
 	@Override
 	protected ResponseEntity<Object> handleHttpMediaTypeNotSupported(HttpMediaTypeNotSupportedException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
 		return customizeErrorMessage(ex, headers, status, request);
 	}
 
-	@ExceptionHandler(CustomException.class)
-	public ResponseEntity<?> handleResourceNotFoundException(Exception rnfe,
-			HttpServletRequest request) {
-
-			ErrorDetail errorDetail = new ErrorDetail();
-			errorDetail.setTimeStamp(new Date().getTime());
-			errorDetail.setStatus(HttpStatus.NOT_FOUND.value());
-			errorDetail.setTitle("Custom Exception");
-			errorDetail.setDetail(rnfe.getMessage());
-			errorDetail.setDeveloperMessage(rnfe.getClass().getName());
-			return new ResponseEntity<>(errorDetail, null, HttpStatus.NOT_FOUND);
-		
-	}
-
-	//@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<?> handleValidationError(MethodArgumentNotValidException manve, HttpServletRequest request) {
-
-		ErrorDetail errorDetail = new ErrorDetail();
-		// Populate errorDetail instance
-		errorDetail.setTimeStamp(new Date().getTime());
-		errorDetail.setStatus(HttpStatus.BAD_REQUEST.value());
-		String requestPath = (String) request.getAttribute("javax.servlet.error.request_uri");
-		if (requestPath == null) {
-			requestPath = request.getRequestURI();
-		}
-		errorDetail.setTitle("Validation Failed");
-		errorDetail.setDetail("Input validation failed");
-		errorDetail.setDeveloperMessage(manve.getClass().getName());
-
-		// Create ValidationError instances
-		List<FieldError> fieldErrors = manve.getBindingResult().getFieldErrors();
-		for (FieldError fe : fieldErrors) {
-			List<ValidationError> validationErrorList = errorDetail.getErrors().get(fe.getField());
-			if (validationErrorList == null) {
-				validationErrorList = new ArrayList<ValidationError>();
-				errorDetail.getErrors().put(fe.getField(), validationErrorList);
-			}
-			ValidationError validationError = new ValidationError();
-			validationError.setCode(fe.getCode());
-			logger.info("fe.getCode() = "+fe.getCode()+ "fe.getDefaultMessage() = "+fe.getDefaultMessage());
-			logger.info("messageSource = "+messageSource);
-			validationError.setMessage(fe.getDefaultMessage());
-			validationErrorList.add(validationError);
-		}
-
-		return new ResponseEntity<>(errorDetail, null, HttpStatus.BAD_REQUEST);
-	}
-
-	
-	
 	@Override
-	protected ResponseEntity<Object> handleHttpMediaTypeNotAcceptable(HttpMediaTypeNotAcceptableException ex,
+	protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
 		return customizeErrorMessage(ex, headers, status, request);
 	}
@@ -103,13 +63,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 	@Override
 	protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
-		// TODO Auto-generated method stub
-		return customizeErrorMessage(ex, headers, status, request);
-	}
-
-	@Override
-	protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
-			HttpHeaders headers, HttpStatus status, WebRequest request) {
 		return customizeErrorMessage(ex, headers, status, request);
 	}
 
@@ -118,18 +71,18 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
 		return customizeErrorMessage(manve, headers, status, request);
 	}
-	
-	
 
-	private ResponseEntity<Object> customizeErrorMessage(Exception ex, HttpHeaders headers, HttpStatus status,
-			WebRequest request) {
+	@ExceptionHandler(CustomException.class)
+	public ResponseEntity<ErrorDetail> handleResourceNotFoundException(Exception rnfe, HttpServletRequest request) {
+
 		ErrorDetail errorDetail = new ErrorDetail();
 		errorDetail.setTimeStamp(new Date().getTime());
-		errorDetail.setStatus(status.value());
-		errorDetail.setTitle(ex.getClass().getName());
-		errorDetail.setDetail(ex.getMessage());
-		errorDetail.setDeveloperMessage(ex.getClass().getName());
-		return handleExceptionInternal(ex, errorDetail, headers, status, request);
+		errorDetail.setStatus(HttpStatus.NOT_FOUND.value());
+		errorDetail.setTitle("Custom Exception");
+		errorDetail.setDetail(rnfe.getMessage());
+		errorDetail.setDeveloperMessage(rnfe.getClass().getName());
+		return new ResponseEntity<>(errorDetail, null, HttpStatus.NOT_FOUND);
+
 	}
 
 }

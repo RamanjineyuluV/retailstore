@@ -6,6 +6,11 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class ProductInfoForBill {
 
+	@NotNull
+	private String barCodeId;
+
+	private int quantity;
+
 	public ProductInfoForBill() {
 		super();
 	}
@@ -14,27 +19,25 @@ public class ProductInfoForBill {
 		this.barCodeId = barCodeId;
 		this.quantity = quantity;
 	}
-	@NotNull
-	private String barCodeId;
-	private int quantity;
-	
+
 	public String getBarCodeId() {
 		return barCodeId;
 	}
-	public void setBarCodeId(String barCodeId) {
-		this.barCodeId = barCodeId;
-	}
+
 	public int getQuantity() {
 		return quantity;
 	}
+
+	public void setBarCodeId(String barCodeId) {
+		this.barCodeId = barCodeId;
+	}
+
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-	
-	public String toString(){
+
+	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
 	}
-	
-	
-	
+
 }

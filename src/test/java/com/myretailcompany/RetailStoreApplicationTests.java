@@ -18,21 +18,19 @@ public class RetailStoreApplicationTests {
 
 	@Autowired
 	private ProductRepository productMasterRepo;
-	
+
 	@Test
 	public void contextLoads() {
 	}
-	
-	public void testProductSetup(){
+
+	public void testProductSetup() {
 		productMasterRepo.save(new Product("ABC-abc-1234", 20.0, "Tomato", ProductCategory.A));
-		productMasterRepo.save(new Product("ABC-abc-1235",  40.0, "Onion", ProductCategory.B));
+		productMasterRepo.save(new Product("ABC-abc-1235", 40.0, "Onion", ProductCategory.B));
 		productMasterRepo.save(new Product("ABC-abc-1236", 50.0, "Potato", ProductCategory.C));
-		productMasterRepo.save(new Product("ABC-abc-1237",  35.0, "Bread", ProductCategory.A));
-		productMasterRepo.save(new Product("ABC-abc-1238",  100.0, "Apples", ProductCategory.B));
+		productMasterRepo.save(new Product("ABC-abc-1237", 35.0, "Bread", ProductCategory.A));
+		productMasterRepo.save(new Product("ABC-abc-1238", 100.0, "Apples", ProductCategory.B));
 		productMasterRepo.save(new Product("ABC-abc-1239", 49.0, "Banana", ProductCategory.C));
 		assertThat(productMasterRepo.count()).isEqualTo(6);
 	}
-	
-
 
 }

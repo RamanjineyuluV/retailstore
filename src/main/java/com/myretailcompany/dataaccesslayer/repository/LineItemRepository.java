@@ -4,6 +4,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.myretailcompany.dataaccesslayer.entity.LineItem;
 
-public interface LineItemRepository extends CrudRepository<LineItem, Long>{
-	
+public interface LineItemRepository extends CrudRepository<LineItem, Long> {
+
 }

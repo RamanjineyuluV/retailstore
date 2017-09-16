@@ -21,21 +21,47 @@ import com.myretailcompany.util.ProductCategory;
 @Component
 public class SampleDataSetupRunner implements CommandLineRunner {
 
+	@Autowired
+	private BillService billService;
+
 	final Logger logger = LogManager.getLogger(getClass());
 
 	@Autowired
 	private ProductService productService;
 
-	@Autowired
-	private BillService billService;
-
 	@Override
 	public void run(String... arg0) throws Exception {
-		// TODO Auto-generated method stub
 		logger.info("Inside Runner..");
 		setUpProductData();
 		setupBillData();
 		logger.info("Exiting Runner.. ");
+	}
+
+	public void setupBillData() {
+
+		// create a new Bill to update information.
+		Bill o1 = billService.createBill(new Bill(0.0, 0, BillStatus.IN_PROGRESS));
+
+		Long billId = o1.getId();
+		BillUpdateInfo billUpdateInfo = new BillUpdateInfo();
+		List<ProductInfoForBill> productsToBeAdded = new ArrayList<>();
+		List<ProductInfoForBill> productsToBeRemoved = new ArrayList<>();
+
+		productsToBeAdded.add(new ProductInfoForBill("ABC-abc-0001", 2));
+		productsToBeAdded.add(new ProductInfoForBill("ABC-abc-0002", 2));
+		productsToBeAdded.add(new ProductInfoForBill("ABC-abc-0003", 2));
+		productsToBeAdded.add(new ProductInfoForBill("ABC-abc-0004", 2));
+		productsToBeAdded.add(new ProductInfoForBill("ABC-abc-0005", 2));
+		billUpdateInfo.setProductsToBeAdded(productsToBeAdded);
+		billUpdateInfo.setProductsToBeRemoved(productsToBeRemoved);
+		billUpdateInfo.setStatus(BillStatus.RELEASED);
+
+		logger.info("billUpdateInfo = " + billUpdateInfo);
+		billService.updateBill(billUpdateInfo, billId);
+		Bill retrieveUpdatedbill = billService.getBillById(o1.getId());
+		logger.info("retrieveUpdatedbill = " + retrieveUpdatedbill.getNoOfItems() + "  value ="
+				+ retrieveUpdatedbill.getTotalValue());
+
 	}
 
 	private void setUpProductData() {
@@ -49,32 +75,5 @@ public class SampleDataSetupRunner implements CommandLineRunner {
 		productService.createProduct(new ProductInfo("ABC-abc-0008", 90.0, "Apricot", ProductCategory.B));
 		productService.createProduct(new ProductInfo("ABC-abc-0009", 100.0, "Raisins", ProductCategory.C));
 		productService.createProduct(new ProductInfo("ABC-abc-0010", 110.0, "CashewNut", ProductCategory.A));
-	}
-
-	public void setupBillData() {
-
-		// create a new Bill to update information.
-		Bill o1 = billService.createBill(new Bill(0.0, 0, BillStatus.IN_PROGRESS));
-
-		Long billId = o1.getId();
-		BillUpdateInfo billUpdateInfo = new BillUpdateInfo();
-		List<ProductInfoForBill> productsToBeAdded = new ArrayList<ProductInfoForBill>();
-		List<ProductInfoForBill> productsToBeRemoved = new ArrayList<ProductInfoForBill>();
-
-		productsToBeAdded.add(new ProductInfoForBill("ABC-abc-0001", 2));
-		productsToBeAdded.add(new ProductInfoForBill("ABC-abc-0002", 2));
-		productsToBeAdded.add(new ProductInfoForBill("ABC-abc-0003", 2));
-		productsToBeAdded.add(new ProductInfoForBill("ABC-abc-0004", 2));
-		productsToBeAdded.add(new ProductInfoForBill("ABC-abc-0005", 2));
-		billUpdateInfo.setProductsToBeAdded(productsToBeAdded);
-		billUpdateInfo.setProductsToBeRemoved(productsToBeRemoved);
-		billUpdateInfo.setStatus(BillStatus.RELEASED);
-
-		System.out.println("billUpdateInfo = " + billUpdateInfo);
-		billService.updateBill(billUpdateInfo, billId);
-		Bill retrieveUpdatedbill = billService.getBillById(o1.getId());
-		System.out.println("retrieveUpdatedbill = " + retrieveUpdatedbill.getNoOfItems() + "  value ="
-				+ retrieveUpdatedbill.getTotalValue());
-
 	}
 }

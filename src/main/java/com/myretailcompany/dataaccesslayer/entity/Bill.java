@@ -22,6 +22,27 @@ import com.myretailcompany.util.BillStatus;
 
 public class Bill {
 
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private BillStatus billStatus;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long id;
+
+	@OneToMany(fetch = FetchType.EAGER)
+	private List<LineItem> lineItems;
+	private int noOfItems;
+	private double totalCost;
+
+	private double totalTax;
+
+	private double totalValue;
+
+	public Bill() {
+		super();
+	}
+
 	public Bill(double totalValue, int noOfItems, BillStatus billStatus) {
 		super();
 		this.totalValue = totalValue;
@@ -29,88 +50,65 @@ public class Bill {
 		this.billStatus = billStatus;
 	}
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
-
-	private double totalValue;
-	private double totalCost;
-	private double totalTax;
-
-	public double getTotalTax() {
-		return totalTax;
-	}
-
-	public void setTotalTax(double totalTax) {
-		this.totalTax = totalTax;
-	}
-
-
-	public double getTotalCost() {
-		return totalCost;
-	}
-
-	public void setTotalCost(double totalCost) {
-		this.totalCost = totalCost;
-	}
-
-	private int noOfItems;
-
-	@NotNull
-	@Enumerated(EnumType.STRING)
-	private BillStatus billStatus;
-
-	public BillStatus getBillStatus() {
-		return billStatus;
-	}
-
-	public void setBillStatus(BillStatus billStatus) {
-		this.billStatus = billStatus;
-	}
-
-	@OneToMany(fetch = FetchType.EAGER)
-	private List<LineItem> lineItems;
-
 	public Bill(List<LineItem> lineItems) {
 		super();
 		this.lineItems = lineItems;
 	}
 
-	public Bill() {
-		super();
-		// TODO Auto-generated constructor stub
+	public BillStatus getBillStatus() {
+		return billStatus;
 	}
 
 	public long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public double getTotalValue() {
-		return totalValue;
-	}
-
-	public void setTotalValue(double totalValue) {
-		this.totalValue = totalValue;
+	public List<LineItem> getLineItems() {
+		return lineItems;
 	}
 
 	public int getNoOfItems() {
 		return noOfItems;
 	}
 
-	public void setNoOfItems(int noOfItems) {
-		this.noOfItems = noOfItems;
+	public double getTotalCost() {
+		return totalCost;
 	}
 
-	public List<LineItem> getLineItems() {
-		return lineItems;
+	public double getTotalTax() {
+		return totalTax;
+	}
+
+	public double getTotalValue() {
+		return totalValue;
+	}
+
+	public void setBillStatus(BillStatus billStatus) {
+		this.billStatus = billStatus;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public void setLineItems(List<LineItem> lineItems) {
 		this.lineItems = lineItems;
+	}
+
+	public void setNoOfItems(int noOfItems) {
+		this.noOfItems = noOfItems;
+	}
+
+	public void setTotalCost(double totalCost) {
+		this.totalCost = totalCost;
+	}
+
+	public void setTotalTax(double totalTax) {
+		this.totalTax = totalTax;
+	}
+
+	public void setTotalValue(double totalValue) {
+		this.totalValue = totalValue;
 	}
 
 	public String toString() {

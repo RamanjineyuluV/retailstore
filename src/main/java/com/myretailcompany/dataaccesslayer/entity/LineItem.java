@@ -11,67 +11,54 @@ import javax.persistence.Table;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 @Entity
-@Table (name="LINE_ITEM")
+@Table(name = "LINE_ITEM")
 public class LineItem {
-
-
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
-	
-	@OneToOne(fetch=FetchType.EAGER)
+
+	@OneToOne(fetch = FetchType.EAGER)
 	private Product product;
-	
-	private long quantity;	
-	
-	
+
+	private long quantity;
+
+	public LineItem() {
+		super();
+	}
+
 	public LineItem(Product product, int quantity) {
 		super();
 		this.product = product;
 		this.quantity = quantity;
 	}
 
-	
 	public long getId() {
 		return id;
 	}
-
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-
-	public LineItem() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
 
 	public Product getProduct() {
 		return product;
 	}
 
+	public long getQuantity() {
+		return quantity;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
 
 	public void setProduct(Product product) {
 		this.product = product;
 	}
 
-
-	public long getQuantity() {
-		return quantity;
-	}
-
-
 	public void setQuantity(long quantity) {
 		this.quantity = quantity;
 	}
-	
-	public String toString(){
+
+	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
 	}
-	
-	
-	
+
 }

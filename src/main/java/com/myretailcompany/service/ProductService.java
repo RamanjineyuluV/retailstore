@@ -16,24 +16,28 @@ import com.myretailcompany.rest.controller.product.beans.ProductInfo;
 public class ProductService {
 
 	final Logger logger = LogManager.getLogger(getClass());
-	
+
 	@Autowired
 	private ProductRepository productRepo;
-	
-	private void verifyProductExists(Long id) {
-		logger.info("Verifying if the product exists with an id = " + id);
-		Product product = productRepo.findOne(id);
-		if (product == null) {
-			throw new CustomException("Product with id " + id + " not found");
-		}
+
+	public Product createProduct(ProductInfo productInfo) {
+		logger.info("Input recieved to create product = " + productInfo);
+		verifyIfProductExists(productInfo.getBarCodeId());
+		Product product = new Product();
+		product.setBarCodeId(productInfo.getBarCodeId());
+		product.setName(productInfo.getName());
+		product.setProductCategory(productInfo.getProductCategory());
+		product.setRate(productInfo.getRate());
+
+		product = productRepo.save(product);
+		logger.info("Created product with id = " + product.getId());
+		return product;
+
 	}
 
-	private void verifyIfProductExists(String barCodeId) {
-		List<Product> productsByBarCodeID = productRepo.findByBarCodeId(barCodeId);
-		if (null!= productsByBarCodeID  && productsByBarCodeID.size()!=0) {
-			logger.info("Problem with input data: BarCode ID  " + barCodeId + " already exists in Product Master");
-			throw new CustomException("Problem with input data: BarCode ID  " + barCodeId + " already exists in Product Master");
-		}
+	public void deleteProduct(Long id) {
+		verifyProductExists(id);
+		productRepo.delete(id);
 	}
 
 	// Read
@@ -46,23 +50,7 @@ public class ProductService {
 
 	public Product getProductById(Long id) {
 		verifyProductExists(id);
-		Product product = productRepo.findOne(id);
-		return product;
-	}
-
-	public Product createProduct(ProductInfo productInfo) {
-		logger.info("Input recieved to create product = " + productInfo);
-		verifyIfProductExists(productInfo.getBarCodeId());
-		Product product = new Product();
-		product.setBarCodeId(productInfo.getBarCodeId());
-		product.setName(productInfo.getName());
-		product.setProductCategory(productInfo.getProductCategory());
-		product.setRate(productInfo.getRate());
-		
-		product = productRepo.save(product);
-		logger.info("Created product with id = " + product.getId());
-		return product;
-
+		return productRepo.findOne(id);
 	}
 
 	public Product updateProduct(ProductInfo productInfo, Long id) {
@@ -77,9 +65,21 @@ public class ProductService {
 		return p;
 	}
 
-	public void deleteProduct(Long id) {
-		verifyProductExists(id);
-		productRepo.delete(id);
+	private void verifyIfProductExists(String barCodeId) {
+		List<Product> productsByBarCodeID = productRepo.findByBarCodeId(barCodeId);
+		if (null != productsByBarCodeID && productsByBarCodeID.isEmpty()) {
+			logger.info("Problem with input data: BarCode ID  " + barCodeId + " already exists in Product Master");
+			throw new CustomException(
+					"Problem with input data: BarCode ID  " + barCodeId + " already exists in Product Master");
+		}
+	}
+
+	private void verifyProductExists(Long id) {
+		logger.info("Verifying if the product exists with an id = " + id);
+		Product product = productRepo.findOne(id);
+		if (product == null) {
+			throw new CustomException("Product with id " + id + " not found");
+		}
 	}
 
 }
