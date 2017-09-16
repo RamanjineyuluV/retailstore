@@ -160,7 +160,7 @@ public class BillService {
 		verifyIfProductExists(barCodeId);
 		logger.info("Bar Code Id to be removed  = " + barCodeId);
 
-		if (currentLineItems != null && currentLineItems.isEmpty()) {
+		if (currentLineItems != null && !currentLineItems.isEmpty()) {
 			LineItem lineItem = getLineItemWithBarCodeId(barCodeId, currentLineItems);
 			// check if current list of line items have this product.
 			if (null == lineItem) {

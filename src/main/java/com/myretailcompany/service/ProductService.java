@@ -67,7 +67,7 @@ public class ProductService {
 
 	private void verifyIfProductExists(String barCodeId) {
 		List<Product> productsByBarCodeID = productRepo.findByBarCodeId(barCodeId);
-		if (null != productsByBarCodeID && productsByBarCodeID.isEmpty()) {
+		if (null != productsByBarCodeID && !productsByBarCodeID.isEmpty()) {
 			logger.info("Problem with input data: BarCode ID  " + barCodeId + " already exists in Product Master");
 			throw new CustomException(
 					"Problem with input data: BarCode ID  " + barCodeId + " already exists in Product Master");
