@@ -1,4 +1,4 @@
-package com.myretailcompany.rest.controller.order.beans;
+package com.myretailcompany.rest.controller.bill.beans;
 
 import java.util.List;
 
@@ -6,37 +6,37 @@ import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import com.myretailcompany.util.OrderStatus;
+import com.myretailcompany.util.BillStatus;
 
-public class OrderUpdateInfo {
-	private List<ProductInfoForOrder> productsToBeAdded;
-	private List<ProductInfoForOrder> productsToBeRemoved;
+public class BillUpdateInfo {
+	private List<ProductInfoForBill> productsToBeAdded;
+	private List<ProductInfoForBill> productsToBeRemoved;
 	
-	public OrderUpdateInfo() {
+	public BillUpdateInfo() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	@NotNull
-	private OrderStatus status;
+	private BillStatus status;
 
-	public List<ProductInfoForOrder> getProductsToBeAdded() {
+	public List<ProductInfoForBill> getProductsToBeAdded() {
 		return productsToBeAdded;
 	}
-	public void setProductsToBeAdded(List<ProductInfoForOrder> productsToBeAdded) {
+	public void setProductsToBeAdded(List<ProductInfoForBill> productsToBeAdded) {
 		this.productsToBeAdded = productsToBeAdded;
 	}
-	public List<ProductInfoForOrder> getProductsToBeRemoved() {
+	public List<ProductInfoForBill> getProductsToBeRemoved() {
 		return productsToBeRemoved;
 	}
-	public void setProductsToBeRemoved(List<ProductInfoForOrder> productsToBeRemoved) {
+	public void setProductsToBeRemoved(List<ProductInfoForBill> productsToBeRemoved) {
 		this.productsToBeRemoved = productsToBeRemoved;
 	}
 
 	
-	public OrderStatus getStatus() {
+	public BillStatus getStatus() {
 		return status;
 	}
-	public void setStatus(OrderStatus status) {
+	public void setStatus(BillStatus status) {
 		this.status = status;
 	}
 	

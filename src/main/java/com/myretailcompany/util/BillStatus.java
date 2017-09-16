@@ -1,6 +1,6 @@
 package com.myretailcompany.util;
 
-public enum OrderStatus {
+public enum BillStatus {
 	IN_PROGRESS,
 	RELEASED
 }

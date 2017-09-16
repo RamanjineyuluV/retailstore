@@ -31,7 +31,7 @@ import io.swagger.annotations.ApiResponses;
 // Entity Beans are used and returned by this call to web layer. Ideally they should be different.
 
 @RestController
-@Api(value="onlinestore",description="Operations pertaining to products in Online Store. Provide userid/password to authenticate")
+@Api(value="onlinestore",description="Manage Products")
 public class ProductController {
 
 	final Logger logger = LogManager.getLogger(getClass());
@@ -85,6 +85,14 @@ public class ProductController {
 		responseHeaders.setLocation(newPollUri);
 		return new ResponseEntity<>(product, responseHeaders, HttpStatus.CREATED);
 	}
+	
+	
+	@ApiOperation(value = "Update existing Product",response = String.class,produces = "application/json")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "id <id> updated"),
+            @ApiResponse(code = 401, message = "Bad Credentials")
+    }
+    )	
 
 	@RequestMapping(value = "/products/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Product> updateProduct( @Valid @RequestBody ProductInfo productInfo, @PathVariable Long id) {
@@ -93,6 +101,13 @@ public class ProductController {
 		return new ResponseEntity<>(prod,HttpStatus.OK);
 	}
 
+	
+	@ApiOperation(value = "Delete existing Product",response = String.class,produces = "application/json")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "id <id> deleted"),
+            @ApiResponse(code = 401, message = "Bad Credentials")
+    }
+    )	
 	@RequestMapping(value = "/products/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
 		productService.deleteProduct(id);

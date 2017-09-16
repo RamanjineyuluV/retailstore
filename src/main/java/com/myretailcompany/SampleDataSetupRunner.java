@@ -9,13 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import com.myretailcompany.dataaccesslayer.entity.Order;
-import com.myretailcompany.rest.controller.order.beans.OrderUpdateInfo;
-import com.myretailcompany.rest.controller.order.beans.ProductInfoForOrder;
+import com.myretailcompany.dataaccesslayer.entity.Bill;
+import com.myretailcompany.rest.controller.bill.beans.BillUpdateInfo;
+import com.myretailcompany.rest.controller.bill.beans.ProductInfoForBill;
 import com.myretailcompany.rest.controller.product.beans.ProductInfo;
-import com.myretailcompany.service.OrderService;
+import com.myretailcompany.service.BillService;
 import com.myretailcompany.service.ProductService;
-import com.myretailcompany.util.OrderStatus;
+import com.myretailcompany.util.BillStatus;
 import com.myretailcompany.util.ProductCategory;
 
 @Component
@@ -27,14 +27,14 @@ public class SampleDataSetupRunner implements CommandLineRunner {
 	private ProductService productService;
 
 	@Autowired
-	private OrderService orderService;
+	private BillService billService;
 
 	@Override
 	public void run(String... arg0) throws Exception {
 		// TODO Auto-generated method stub
 		logger.info("Inside Runner..");
 		setUpProductData();
-		setupOrderData();
+		setupBillData();
 		logger.info("Exiting Runner.. ");
 	}
 
@@ -51,30 +51,30 @@ public class SampleDataSetupRunner implements CommandLineRunner {
 		productService.createProduct(new ProductInfo("ABC-abc-0010", 110.0, "CashewNut", ProductCategory.A));
 	}
 
-	public void setupOrderData() {
+	public void setupBillData() {
 
-		// create a new order to update information.
-		Order o1 = orderService.createOrder(new Order(0.0, 0, OrderStatus.IN_PROGRESS));
+		// create a new Bill to update information.
+		Bill o1 = billService.createBill(new Bill(0.0, 0, BillStatus.IN_PROGRESS));
 
-		Long orderId = o1.getId();
-		OrderUpdateInfo orderupdateInfo = new OrderUpdateInfo();
-		List<ProductInfoForOrder> productsToBeAdded = new ArrayList<ProductInfoForOrder>();
-		List<ProductInfoForOrder> productsToBeRemoved = new ArrayList<ProductInfoForOrder>();
+		Long billId = o1.getId();
+		BillUpdateInfo billUpdateInfo = new BillUpdateInfo();
+		List<ProductInfoForBill> productsToBeAdded = new ArrayList<ProductInfoForBill>();
+		List<ProductInfoForBill> productsToBeRemoved = new ArrayList<ProductInfoForBill>();
 
-		productsToBeAdded.add(new ProductInfoForOrder("ABC-abc-0001", 2));
-		productsToBeAdded.add(new ProductInfoForOrder("ABC-abc-0002", 2));
-		productsToBeAdded.add(new ProductInfoForOrder("ABC-abc-0003", 2));
-		productsToBeAdded.add(new ProductInfoForOrder("ABC-abc-0004", 2));
-		productsToBeAdded.add(new ProductInfoForOrder("ABC-abc-0005", 2));
-		orderupdateInfo.setProductsToBeAdded(productsToBeAdded);
-		orderupdateInfo.setProductsToBeRemoved(productsToBeRemoved);
-		orderupdateInfo.setStatus(OrderStatus.RELEASED);
+		productsToBeAdded.add(new ProductInfoForBill("ABC-abc-0001", 2));
+		productsToBeAdded.add(new ProductInfoForBill("ABC-abc-0002", 2));
+		productsToBeAdded.add(new ProductInfoForBill("ABC-abc-0003", 2));
+		productsToBeAdded.add(new ProductInfoForBill("ABC-abc-0004", 2));
+		productsToBeAdded.add(new ProductInfoForBill("ABC-abc-0005", 2));
+		billUpdateInfo.setProductsToBeAdded(productsToBeAdded);
+		billUpdateInfo.setProductsToBeRemoved(productsToBeRemoved);
+		billUpdateInfo.setStatus(BillStatus.RELEASED);
 
-		System.out.println("orderupdateInfo = " + orderupdateInfo);
-		orderService.updateOrder(orderupdateInfo, orderId);
-		Order retrieveUpdatedOrder = orderService.getOrderById(o1.getId());
-		System.out.println("retrieveUpdatedOrder = " + retrieveUpdatedOrder.getNoOfItems() + "  value ="
-				+ retrieveUpdatedOrder.getTotalValue());
+		System.out.println("billUpdateInfo = " + billUpdateInfo);
+		billService.updateBill(billUpdateInfo, billId);
+		Bill retrieveUpdatedbill = billService.getBillById(o1.getId());
+		System.out.println("retrieveUpdatedbill = " + retrieveUpdatedbill.getNoOfItems() + "  value ="
+				+ retrieveUpdatedbill.getTotalValue());
 
 	}
 }

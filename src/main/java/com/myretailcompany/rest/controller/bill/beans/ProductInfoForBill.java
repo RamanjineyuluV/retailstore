@@ -1,15 +1,15 @@
-package com.myretailcompany.rest.controller.order.beans;
+package com.myretailcompany.rest.controller.bill.beans;
 
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class ProductInfoForOrder {
+public class ProductInfoForBill {
 
-	public ProductInfoForOrder() {
+	public ProductInfoForBill() {
 		super();
 	}
-	public ProductInfoForOrder(String barCodeId, int quantity) {
+	public ProductInfoForBill(String barCodeId, int quantity) {
 		super();
 		this.barCodeId = barCodeId;
 		this.quantity = quantity;

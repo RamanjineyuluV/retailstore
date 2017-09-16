@@ -26,7 +26,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 		 	.frameOptions().disable().and() //fix to get h2-console working.
 		 	.authorizeRequests()
 	        .antMatchers("/v1/**", "/v2/**", "/swagger-ui/**", "/api-docs/**","/h2-console/**").permitAll()     //we don't want Sprint to protect these urls
-	        .antMatchers("/products/**","/orders/**").authenticated().and().httpBasic().realmName("mystore")
+	        .antMatchers("/products/**","/bills/**").authenticated().and().httpBasic().realmName("mystore")
 	        .and()
 	     .csrf()
 	        .disable();

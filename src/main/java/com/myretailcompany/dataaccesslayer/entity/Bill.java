@@ -15,18 +15,18 @@ import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import com.myretailcompany.util.OrderStatus;
+import com.myretailcompany.util.BillStatus;
 
 @Entity
-@Table(name = "ORDERS")
+@Table(name = "BILLS")
 
-public class Order {
+public class Bill {
 
-	public Order(double totalValue, int noOfItems, OrderStatus orderStatus) {
+	public Bill(double totalValue, int noOfItems, BillStatus billStatus) {
 		super();
 		this.totalValue = totalValue;
 		this.noOfItems = noOfItems;
-		this.orderStatus = orderStatus;
+		this.billStatus = billStatus;
 	}
 
 	@Id
@@ -58,25 +58,25 @@ public class Order {
 
 	@NotNull
 	@Enumerated(EnumType.STRING)
-	private OrderStatus orderStatus;
+	private BillStatus billStatus;
 
-	public OrderStatus getOrderStatus() {
-		return orderStatus;
+	public BillStatus getBillStatus() {
+		return billStatus;
 	}
 
-	public void setOrderStatus(OrderStatus orderStatus) {
-		this.orderStatus = orderStatus;
+	public void setBillStatus(BillStatus billStatus) {
+		this.billStatus = billStatus;
 	}
 
 	@OneToMany(fetch = FetchType.EAGER)
 	private List<LineItem> lineItems;
 
-	public Order(List<LineItem> lineItems) {
+	public Bill(List<LineItem> lineItems) {
 		super();
 		this.lineItems = lineItems;
 	}
 
-	public Order() {
+	public Bill() {
 		super();
 		// TODO Auto-generated constructor stub
 	}

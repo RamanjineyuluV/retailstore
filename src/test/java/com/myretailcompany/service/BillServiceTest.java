@@ -11,254 +11,254 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.myretailcompany.dataaccesslayer.entity.Order;
+import com.myretailcompany.dataaccesslayer.entity.Bill;
 import com.myretailcompany.rest.controller.CustomException;
-import com.myretailcompany.rest.controller.order.beans.OrderUpdateInfo;
-import com.myretailcompany.rest.controller.order.beans.ProductInfoForOrder;
-import com.myretailcompany.util.OrderStatus;
+import com.myretailcompany.rest.controller.bill.beans.BillUpdateInfo;
+import com.myretailcompany.rest.controller.bill.beans.ProductInfoForBill;
+import com.myretailcompany.util.BillStatus;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class OrderServiceTest {
+public class BillServiceTest {
 
 	@Autowired
-	private OrderService orderService;
+	private BillService billService;
 	
 	@Test
-	public void testCreateOrder(){
-		Order o1 =orderService.createOrder(new Order(0.0,0,OrderStatus.IN_PROGRESS));
-		Order o2 = orderService.getOrderById(o1.getId());
+	public void testCreateBill(){
+		Bill o1 =billService.createBill(new Bill(0.0,0,BillStatus.IN_PROGRESS));
+		Bill o2 = billService.getBillById(o1.getId());
 		assertThat(o1.getId()).isEqualTo(o2.getId());
 	}
 	
 	@Test
-	public void testOrderUpdateAddSingleProductCatA(){
-		//create a new order to update information.
-		Order o1 =orderService.createOrder(new Order(0.0,0,OrderStatus.IN_PROGRESS));
+	public void testBillUpdateAddSingleProductCatA(){
+		//create a new Bill to update information.
+		Bill o1 =billService.createBill(new Bill(0.0,0,BillStatus.IN_PROGRESS));
 		
-		Long orderId = o1.getId();
-		OrderUpdateInfo orderupdateInfo = new OrderUpdateInfo();
-		List<ProductInfoForOrder> productsToBeAdded = new ArrayList<ProductInfoForOrder>();
-		List<ProductInfoForOrder> productsToBeRemoved = new ArrayList<ProductInfoForOrder>();
+		Long billId = o1.getId();
+		BillUpdateInfo billupdateInfo = new BillUpdateInfo();
+		List<ProductInfoForBill> productsToBeAdded = new ArrayList<ProductInfoForBill>();
+		List<ProductInfoForBill> productsToBeRemoved = new ArrayList<ProductInfoForBill>();
 		
-		productsToBeAdded.add(new ProductInfoForOrder("ABC-abc-0001",2));
-		orderupdateInfo.setProductsToBeAdded(productsToBeAdded);
-		orderupdateInfo.setProductsToBeRemoved(productsToBeRemoved);
-		orderupdateInfo.setStatus(OrderStatus.RELEASED);
+		productsToBeAdded.add(new ProductInfoForBill("ABC-abc-0001",2));
+		billupdateInfo.setProductsToBeAdded(productsToBeAdded);
+		billupdateInfo.setProductsToBeRemoved(productsToBeRemoved);
+		billupdateInfo.setStatus(BillStatus.RELEASED);
 		
-		System.out.println("orderupdateInfo = "+orderupdateInfo);
-		orderService.updateOrder(orderupdateInfo, orderId);
-		Order retrieveUpdatedOrder = orderService.getOrderById(o1.getId());
-		System.out.println("retrieveUpdatedOrder = "+retrieveUpdatedOrder.getNoOfItems()+"  value ="+retrieveUpdatedOrder.getTotalValue());
-		assertThat(retrieveUpdatedOrder.getNoOfItems()).isEqualTo(1);
-		assertThat(retrieveUpdatedOrder.getTotalValue()).isEqualTo(20*2*1.1);
+		System.out.println("billupdateInfo = "+billupdateInfo);
+		billService.updateBill(billupdateInfo, billId);
+		Bill retrieveUpdatedBill = billService.getBillById(o1.getId());
+		System.out.println("retrieveUpdatedBill = "+retrieveUpdatedBill.getNoOfItems()+"  value ="+retrieveUpdatedBill.getTotalValue());
+		assertThat(retrieveUpdatedBill.getNoOfItems()).isEqualTo(1);
+		assertThat(retrieveUpdatedBill.getTotalValue()).isEqualTo(20*2*1.1);
 	}
 	
 	@Test
-	public void testOrderUpdateAddSingleProductCatB(){
+	public void testBillUpdateAddSingleProductCatB(){
 		
-		//create a new order to update information.
-		Order o1 =orderService.createOrder(new Order(0.0,0,OrderStatus.IN_PROGRESS));
+		//create a new bill to update information.
+		Bill o1 =billService.createBill(new Bill(0.0,0,BillStatus.IN_PROGRESS));
 		
-		Long orderId = o1.getId();
-		OrderUpdateInfo orderupdateInfo = new OrderUpdateInfo();
-		List<ProductInfoForOrder> productsToBeAdded = new ArrayList<ProductInfoForOrder>();
-		List<ProductInfoForOrder> productsToBeRemoved = new ArrayList<ProductInfoForOrder>();
+		Long billId = o1.getId();
+		BillUpdateInfo billupdateInfo = new BillUpdateInfo();
+		List<ProductInfoForBill> productsToBeAdded = new ArrayList<ProductInfoForBill>();
+		List<ProductInfoForBill> productsToBeRemoved = new ArrayList<ProductInfoForBill>();
 		
-		productsToBeAdded.add(new ProductInfoForOrder("ABC-abc-0002",2));
-		orderupdateInfo.setProductsToBeAdded(productsToBeAdded);
-		orderupdateInfo.setProductsToBeRemoved(productsToBeRemoved);
-		orderupdateInfo.setStatus(OrderStatus.RELEASED);
+		productsToBeAdded.add(new ProductInfoForBill("ABC-abc-0002",2));
+		billupdateInfo.setProductsToBeAdded(productsToBeAdded);
+		billupdateInfo.setProductsToBeRemoved(productsToBeRemoved);
+		billupdateInfo.setStatus(BillStatus.RELEASED);
 		
-		System.out.println("orderupdateInfo = "+orderupdateInfo);
-		orderService.updateOrder(orderupdateInfo, orderId);
-		Order retrieveUpdatedOrder = orderService.getOrderById(o1.getId());
-		System.out.println("retrieveUpdatedOrder = "+retrieveUpdatedOrder.getNoOfItems()+"  value ="+retrieveUpdatedOrder.getTotalValue());
-		assertThat(retrieveUpdatedOrder.getNoOfItems()).isEqualTo(1);
-		assertThat(retrieveUpdatedOrder.getTotalValue()).isEqualTo(30*2*1.2);
+		System.out.println("billupdateInfo = "+billupdateInfo);
+		billService.updateBill(billupdateInfo, billId);
+		Bill retrieveUpdatedBill = billService.getBillById(o1.getId());
+		System.out.println("retrieveUpdatedBill = "+retrieveUpdatedBill.getNoOfItems()+"  value ="+retrieveUpdatedBill.getTotalValue());
+		assertThat(retrieveUpdatedBill.getNoOfItems()).isEqualTo(1);
+		assertThat(retrieveUpdatedBill.getTotalValue()).isEqualTo(30*2*1.2);
 
 		
 	}
 	
 	
 	@Test
-	public void testOrderUpdateAddSingleProductCatC(){
+	public void testBillUpdateAddSingleProductCatC(){
 		
-		//create a new order to update information.
-		Order o1 =orderService.createOrder(new Order(0.0,0,OrderStatus.IN_PROGRESS));
+		//create a new bill to update information.
+		Bill o1 =billService.createBill(new Bill(0.0,0,BillStatus.IN_PROGRESS));
 		
-		Long orderId = o1.getId();
-		OrderUpdateInfo orderupdateInfo = new OrderUpdateInfo();
-		List<ProductInfoForOrder> productsToBeAdded = new ArrayList<ProductInfoForOrder>();
-		List<ProductInfoForOrder> productsToBeRemoved = new ArrayList<ProductInfoForOrder>();
+		Long billId = o1.getId();
+		BillUpdateInfo billupdateInfo = new BillUpdateInfo();
+		List<ProductInfoForBill> productsToBeAdded = new ArrayList<ProductInfoForBill>();
+		List<ProductInfoForBill> productsToBeRemoved = new ArrayList<ProductInfoForBill>();
 		
-		productsToBeAdded.add(new ProductInfoForOrder("ABC-abc-0003",2));
-		orderupdateInfo.setProductsToBeAdded(productsToBeAdded);
-		orderupdateInfo.setProductsToBeRemoved(productsToBeRemoved);
-		orderupdateInfo.setStatus(OrderStatus.RELEASED);
+		productsToBeAdded.add(new ProductInfoForBill("ABC-abc-0003",2));
+		billupdateInfo.setProductsToBeAdded(productsToBeAdded);
+		billupdateInfo.setProductsToBeRemoved(productsToBeRemoved);
+		billupdateInfo.setStatus(BillStatus.RELEASED);
 		
-		System.out.println("orderupdateInfo = "+orderupdateInfo);
-		orderService.updateOrder(orderupdateInfo, orderId);
-		Order retrieveUpdatedOrder = orderService.getOrderById(o1.getId());
-		System.out.println("retrieveUpdatedOrder = "+retrieveUpdatedOrder.getNoOfItems()+"  value ="+retrieveUpdatedOrder.getTotalValue());
-		assertThat(retrieveUpdatedOrder.getNoOfItems()).isEqualTo(1);
-		assertThat(retrieveUpdatedOrder.getTotalValue()).isEqualTo(40*2*1);
+		System.out.println("billupdateInfo = "+billupdateInfo);
+		billService.updateBill(billupdateInfo, billId);
+		Bill retrieveUpdatedBill = billService.getBillById(o1.getId());
+		System.out.println("retrieveUpdatedBill = "+retrieveUpdatedBill.getNoOfItems()+"  value ="+retrieveUpdatedBill.getTotalValue());
+		assertThat(retrieveUpdatedBill.getNoOfItems()).isEqualTo(1);
+		assertThat(retrieveUpdatedBill.getTotalValue()).isEqualTo(40*2*1);
 	}
 	
 	
 	@Test
-	public void testOrderUpdateAddMultipleProducts(){
+	public void testBillUpdateAddMultipleProducts(){
 		
-		//create a new order to update information.
-		Order o1 =orderService.createOrder(new Order(0.0,0,OrderStatus.IN_PROGRESS));
+		//create a new bill to update information.
+		Bill o1 =billService.createBill(new Bill(0.0,0,BillStatus.IN_PROGRESS));
 		
-		Long orderId = o1.getId();
-		OrderUpdateInfo orderupdateInfo = new OrderUpdateInfo();
-		List<ProductInfoForOrder> productsToBeAdded = new ArrayList<ProductInfoForOrder>();
-		List<ProductInfoForOrder> productsToBeRemoved = new ArrayList<ProductInfoForOrder>();
+		Long billId = o1.getId();
+		BillUpdateInfo billupdateInfo = new BillUpdateInfo();
+		List<ProductInfoForBill> productsToBeAdded = new ArrayList<ProductInfoForBill>();
+		List<ProductInfoForBill> productsToBeRemoved = new ArrayList<ProductInfoForBill>();
 		
-		productsToBeAdded.add(new ProductInfoForOrder("ABC-abc-0001",2));
-		productsToBeAdded.add(new ProductInfoForOrder("ABC-abc-0002",2));
-		productsToBeAdded.add(new ProductInfoForOrder("ABC-abc-0003",2));
-		productsToBeAdded.add(new ProductInfoForOrder("ABC-abc-0004",2));
-		productsToBeAdded.add(new ProductInfoForOrder("ABC-abc-0005",2));
-		orderupdateInfo.setProductsToBeAdded(productsToBeAdded);
-		orderupdateInfo.setProductsToBeRemoved(productsToBeRemoved);
-		orderupdateInfo.setStatus(OrderStatus.RELEASED);
+		productsToBeAdded.add(new ProductInfoForBill("ABC-abc-0001",2));
+		productsToBeAdded.add(new ProductInfoForBill("ABC-abc-0002",2));
+		productsToBeAdded.add(new ProductInfoForBill("ABC-abc-0003",2));
+		productsToBeAdded.add(new ProductInfoForBill("ABC-abc-0004",2));
+		productsToBeAdded.add(new ProductInfoForBill("ABC-abc-0005",2));
+		billupdateInfo.setProductsToBeAdded(productsToBeAdded);
+		billupdateInfo.setProductsToBeRemoved(productsToBeRemoved);
+		billupdateInfo.setStatus(BillStatus.RELEASED);
 		
-		System.out.println("orderupdateInfo = "+orderupdateInfo);
-		orderService.updateOrder(orderupdateInfo, orderId);
-		Order retrieveUpdatedOrder = orderService.getOrderById(o1.getId());
-		System.out.println("retrieveUpdatedOrder = "+retrieveUpdatedOrder.getNoOfItems()+"  value ="+retrieveUpdatedOrder.getTotalValue());
-		assertThat(retrieveUpdatedOrder.getNoOfItems()).isEqualTo(5); //5 products add
-		assertThat(retrieveUpdatedOrder.getTotalValue()).isEqualTo(20*2*1.1+30*2*1.2+40*2*1+50*2*1.1+60*2*1.2);
+		System.out.println("billupdateInfo = "+billupdateInfo);
+		billService.updateBill(billupdateInfo, billId);
+		Bill retrieveUpdatedBill = billService.getBillById(o1.getId());
+		System.out.println("retrieveUpdatedBill = "+retrieveUpdatedBill.getNoOfItems()+"  value ="+retrieveUpdatedBill.getTotalValue());
+		assertThat(retrieveUpdatedBill.getNoOfItems()).isEqualTo(5); //5 products add
+		assertThat(retrieveUpdatedBill.getTotalValue()).isEqualTo(20*2*1.1+30*2*1.2+40*2*1+50*2*1.1+60*2*1.2);
 	}
 	
 	@Test
-	public void testOrderUpdateAddAndRemoveProducts(){
+	public void testBillUpdateAddAndRemoveProducts(){
 		
-		//create a new order to update information.
-		Order o1 =orderService.createOrder(new Order(0.0,0,OrderStatus.IN_PROGRESS));
+		//create a new bill to update information.
+		Bill o1 =billService.createBill(new Bill(0.0,0,BillStatus.IN_PROGRESS));
 		
-		Long orderId = o1.getId();
-		OrderUpdateInfo orderupdateInfo = new OrderUpdateInfo();
-		List<ProductInfoForOrder> productsToBeAdded = new ArrayList<ProductInfoForOrder>();
-		List<ProductInfoForOrder> productsToBeRemoved = new ArrayList<ProductInfoForOrder>();
+		Long billId = o1.getId();
+		BillUpdateInfo billupdateInfo = new BillUpdateInfo();
+		List<ProductInfoForBill> productsToBeAdded = new ArrayList<ProductInfoForBill>();
+		List<ProductInfoForBill> productsToBeRemoved = new ArrayList<ProductInfoForBill>();
 		
-		productsToBeAdded.add(new ProductInfoForOrder("ABC-abc-0001",2));
-		productsToBeAdded.add(new ProductInfoForOrder("ABC-abc-0002",2));
-		productsToBeAdded.add(new ProductInfoForOrder("ABC-abc-0003",2));
-		productsToBeAdded.add(new ProductInfoForOrder("ABC-abc-0004",2));
-		productsToBeAdded.add(new ProductInfoForOrder("ABC-abc-0005",2));
-		orderupdateInfo.setProductsToBeAdded(productsToBeAdded);
+		productsToBeAdded.add(new ProductInfoForBill("ABC-abc-0001",2));
+		productsToBeAdded.add(new ProductInfoForBill("ABC-abc-0002",2));
+		productsToBeAdded.add(new ProductInfoForBill("ABC-abc-0003",2));
+		productsToBeAdded.add(new ProductInfoForBill("ABC-abc-0004",2));
+		productsToBeAdded.add(new ProductInfoForBill("ABC-abc-0005",2));
+		billupdateInfo.setProductsToBeAdded(productsToBeAdded);
 		
-		productsToBeRemoved.add(new ProductInfoForOrder("ABC-abc-0005",2));
-		orderupdateInfo.setProductsToBeRemoved(productsToBeRemoved);
-		orderupdateInfo.setStatus(OrderStatus.RELEASED);
+		productsToBeRemoved.add(new ProductInfoForBill("ABC-abc-0005",2));
+		billupdateInfo.setProductsToBeRemoved(productsToBeRemoved);
+		billupdateInfo.setStatus(BillStatus.RELEASED);
 		
-		System.out.println("orderupdateInfo = "+orderupdateInfo);
-		orderService.updateOrder(orderupdateInfo, orderId);
-		Order retrieveUpdatedOrder = orderService.getOrderById(o1.getId());
-		System.out.println("retrieveUpdatedOrder = "+retrieveUpdatedOrder.getNoOfItems()+"  value ="+retrieveUpdatedOrder.getTotalValue()+"   list of items = "+retrieveUpdatedOrder.getLineItems());
+		System.out.println("billupdateInfo = "+billupdateInfo);
+		billService.updateBill(billupdateInfo, billId);
+		Bill retrieveUpdatedBill = billService.getBillById(o1.getId());
+		System.out.println("retrieveUpdatedBill = "+retrieveUpdatedBill.getNoOfItems()+"  value ="+retrieveUpdatedBill.getTotalValue()+"   list of items = "+retrieveUpdatedBill.getLineItems());
 		
 		
 		
-		assertThat(retrieveUpdatedOrder.getNoOfItems()).isEqualTo(4); //5 products add
-		assertThat(retrieveUpdatedOrder.getTotalValue()).isEqualTo(20*2*1.1+30*2*1.2+40*2*1+50*2*1.1);
+		assertThat(retrieveUpdatedBill.getNoOfItems()).isEqualTo(4); //5 products add
+		assertThat(retrieveUpdatedBill.getTotalValue()).isEqualTo(20*2*1.1+30*2*1.2+40*2*1+50*2*1.1);
 	}
 	
 	
 	
 	
 	@Test(expected=CustomException.class)
-	public void testOrderUpdateAddNonExistingProduct(){
+	public void testBillUpdateAddNonExistingProduct(){
 		
-		//create a new order to update information.
-		Order o1 =orderService.createOrder(new Order(0.0,0,OrderStatus.IN_PROGRESS));
+		//create a new bill to update information.
+		Bill o1 =billService.createBill(new Bill(0.0,0,BillStatus.IN_PROGRESS));
 		
-		Long orderId = o1.getId();
-		OrderUpdateInfo orderupdateInfo = new OrderUpdateInfo();
-		List<ProductInfoForOrder> productsToBeAdded = new ArrayList<ProductInfoForOrder>();
-		List<ProductInfoForOrder> productsToBeRemoved = new ArrayList<ProductInfoForOrder>();
+		Long billId = o1.getId();
+		BillUpdateInfo billupdateInfo = new BillUpdateInfo();
+		List<ProductInfoForBill> productsToBeAdded = new ArrayList<ProductInfoForBill>();
+		List<ProductInfoForBill> productsToBeRemoved = new ArrayList<ProductInfoForBill>();
 		
-		productsToBeAdded.add(new ProductInfoForOrder("DDD-abc-0003",2));
-		orderupdateInfo.setProductsToBeAdded(productsToBeAdded);
-		orderupdateInfo.setProductsToBeRemoved(productsToBeRemoved);
-		orderupdateInfo.setStatus(OrderStatus.RELEASED);
+		productsToBeAdded.add(new ProductInfoForBill("DDD-abc-0003",2));
+		billupdateInfo.setProductsToBeAdded(productsToBeAdded);
+		billupdateInfo.setProductsToBeRemoved(productsToBeRemoved);
+		billupdateInfo.setStatus(BillStatus.RELEASED);
 		
-		System.out.println("orderupdateInfo = "+orderupdateInfo);
-		orderService.updateOrder(orderupdateInfo, orderId);
-		Order retrieveUpdatedOrder = orderService.getOrderById(o1.getId());
-		System.out.println("retrieveUpdatedOrder = "+retrieveUpdatedOrder.getNoOfItems()+"  value ="+retrieveUpdatedOrder.getTotalValue()+"   list of items = "+retrieveUpdatedOrder.getLineItems());
-		assertThat(retrieveUpdatedOrder.getNoOfItems()).isEqualTo(1);
-		assertThat(retrieveUpdatedOrder.getTotalValue()).isEqualTo(40*2*1);
+		System.out.println("billupdateInfo = "+billupdateInfo);
+		billService.updateBill(billupdateInfo, billId);
+		Bill retrieveUpdatedBill = billService.getBillById(o1.getId());
+		System.out.println("retrieveUpdatedBill = "+retrieveUpdatedBill.getNoOfItems()+"  value ="+retrieveUpdatedBill.getTotalValue()+"   list of items = "+retrieveUpdatedBill.getLineItems());
+		assertThat(retrieveUpdatedBill.getNoOfItems()).isEqualTo(1);
+		assertThat(retrieveUpdatedBill.getTotalValue()).isEqualTo(40*2*1);
 	}
 	
 
 	@Test(expected=CustomException.class)
-	public void testOrderUpdateRemoveNonExistingProduct(){
+	public void testBillUpdateRemoveNonExistingProduct(){
 		
-		//create a new order to update information.
-		Order o1 =orderService.createOrder(new Order(0.0,0,OrderStatus.IN_PROGRESS));
+		//create a new bill to update information.
+		Bill o1 =billService.createBill(new Bill(0.0,0,BillStatus.IN_PROGRESS));
 		
-		Long orderId = o1.getId();
-		OrderUpdateInfo orderupdateInfo = new OrderUpdateInfo();
-		List<ProductInfoForOrder> productsToBeAdded = new ArrayList<ProductInfoForOrder>();
-		List<ProductInfoForOrder> productsToBeRemoved = new ArrayList<ProductInfoForOrder>();
+		Long billId = o1.getId();
+		BillUpdateInfo billupdateInfo = new BillUpdateInfo();
+		List<ProductInfoForBill> productsToBeAdded = new ArrayList<ProductInfoForBill>();
+		List<ProductInfoForBill> productsToBeRemoved = new ArrayList<ProductInfoForBill>();
 		
-		productsToBeRemoved.add(new ProductInfoForOrder("DDD-abc-0003",2));
-		orderupdateInfo.setProductsToBeAdded(productsToBeAdded);
-		orderupdateInfo.setProductsToBeRemoved(productsToBeRemoved);
-		orderupdateInfo.setStatus(OrderStatus.RELEASED);
+		productsToBeRemoved.add(new ProductInfoForBill("DDD-abc-0003",2));
+		billupdateInfo.setProductsToBeAdded(productsToBeAdded);
+		billupdateInfo.setProductsToBeRemoved(productsToBeRemoved);
+		billupdateInfo.setStatus(BillStatus.RELEASED);
 		
-		System.out.println("orderupdateInfo = "+orderupdateInfo);
-		orderService.updateOrder(orderupdateInfo, orderId);
-		Order retrieveUpdatedOrder = orderService.getOrderById(o1.getId());
-		System.out.println("retrieveUpdatedOrder = "+retrieveUpdatedOrder.getNoOfItems()+"  value ="+retrieveUpdatedOrder.getTotalValue()+"   list of items = "+retrieveUpdatedOrder.getLineItems());
+		System.out.println("billupdateInfo = "+billupdateInfo);
+		billService.updateBill(billupdateInfo, billId);
+		Bill retrieveUpdatedBill = billService.getBillById(o1.getId());
+		System.out.println("retrieveUpdatedBill = "+retrieveUpdatedBill.getNoOfItems()+"  value ="+retrieveUpdatedBill.getTotalValue()+"   list of items = "+retrieveUpdatedBill.getLineItems());
 
 	}
 	
 	@Test(expected=CustomException.class)
-	public void testOrderNotExist(){
+	public void testBillNotExist(){
 		
-		//create a new order to update information.
-		Order o1 =orderService.createOrder(new Order(0.0,0,OrderStatus.IN_PROGRESS));
-		OrderUpdateInfo orderupdateInfo = new OrderUpdateInfo();
-		List<ProductInfoForOrder> productsToBeAdded = new ArrayList<ProductInfoForOrder>();
-		List<ProductInfoForOrder> productsToBeRemoved = new ArrayList<ProductInfoForOrder>();
+		//create a new bill to update information.
+		Bill o1 =billService.createBill(new Bill(0.0,0,BillStatus.IN_PROGRESS));
+		BillUpdateInfo billupdateInfo = new BillUpdateInfo();
+		List<ProductInfoForBill> productsToBeAdded = new ArrayList<ProductInfoForBill>();
+		List<ProductInfoForBill> productsToBeRemoved = new ArrayList<ProductInfoForBill>();
 		
-		productsToBeRemoved.add(new ProductInfoForOrder("DDD-abc-0003",2));
-		orderupdateInfo.setProductsToBeAdded(productsToBeAdded);
-		orderupdateInfo.setProductsToBeRemoved(productsToBeRemoved);
-		orderupdateInfo.setStatus(OrderStatus.RELEASED);
+		productsToBeRemoved.add(new ProductInfoForBill("DDD-abc-0003",2));
+		billupdateInfo.setProductsToBeAdded(productsToBeAdded);
+		billupdateInfo.setProductsToBeRemoved(productsToBeRemoved);
+		billupdateInfo.setStatus(BillStatus.RELEASED);
 		
-		System.out.println("orderupdateInfo = "+orderupdateInfo);
-		orderService.updateOrder(orderupdateInfo, (long)9999);
-		Order retrieveUpdatedOrder = orderService.getOrderById(o1.getId());
-		System.out.println("retrieveUpdatedOrder = "+retrieveUpdatedOrder.getNoOfItems()+"  value ="+retrieveUpdatedOrder.getTotalValue()+"   list of items = "+retrieveUpdatedOrder.getLineItems());
+		System.out.println("billupdateInfo = "+billupdateInfo);
+		billService.updateBill(billupdateInfo, (long)9999);
+		Bill retrieveUpdatedBill = billService.getBillById(o1.getId());
+		System.out.println("retrieveUpdatedBill = "+retrieveUpdatedBill.getNoOfItems()+"  value ="+retrieveUpdatedBill.getTotalValue()+"   list of items = "+retrieveUpdatedBill.getLineItems());
 
 	}
 	
 	@Test(expected=CustomException.class)
-	public void testOrderUpdateRemoveExistingProductFromEmptyOrder(){
+	public void testBillUpdateRemoveExistingProductFromEmptyBill(){
 		
-		//create a new order to update information.
-		Order o1 =orderService.createOrder(new Order(0.0,0,OrderStatus.IN_PROGRESS));
+		//create a new bill to update information.
+		Bill o1 =billService.createBill(new Bill(0.0,0,BillStatus.IN_PROGRESS));
 		
-		Long orderId = o1.getId();
-		OrderUpdateInfo orderupdateInfo = new OrderUpdateInfo();
-		List<ProductInfoForOrder> productsToBeAdded = new ArrayList<ProductInfoForOrder>();
-		List<ProductInfoForOrder> productsToBeRemoved = new ArrayList<ProductInfoForOrder>();
+		Long billId = o1.getId();
+		BillUpdateInfo billupdateInfo = new BillUpdateInfo();
+		List<ProductInfoForBill> productsToBeAdded = new ArrayList<ProductInfoForBill>();
+		List<ProductInfoForBill> productsToBeRemoved = new ArrayList<ProductInfoForBill>();
 		
-		productsToBeRemoved.add(new ProductInfoForOrder("ABC-abc-0001",2));
-		orderupdateInfo.setProductsToBeAdded(productsToBeAdded);
-		orderupdateInfo.setProductsToBeRemoved(productsToBeRemoved);
-		orderupdateInfo.setStatus(OrderStatus.RELEASED);
+		productsToBeRemoved.add(new ProductInfoForBill("ABC-abc-0001",2));
+		billupdateInfo.setProductsToBeAdded(productsToBeAdded);
+		billupdateInfo.setProductsToBeRemoved(productsToBeRemoved);
+		billupdateInfo.setStatus(BillStatus.RELEASED);
 		
-		System.out.println("orderupdateInfo = "+orderupdateInfo);
-		orderService.updateOrder(orderupdateInfo, orderId);
-		Order retrieveUpdatedOrder = orderService.getOrderById(o1.getId());
-		System.out.println("retrieveUpdatedOrder = "+retrieveUpdatedOrder.getNoOfItems()+"  value ="+retrieveUpdatedOrder.getTotalValue()+"   list of items = "+retrieveUpdatedOrder.getLineItems());
+		System.out.println("billupdateInfo = "+billupdateInfo);
+		billService.updateBill(billupdateInfo, billId);
+		Bill retrieveUpdatedBill = billService.getBillById(o1.getId());
+		System.out.println("retrieveUpdatedBill = "+retrieveUpdatedBill.getNoOfItems()+"  value ="+retrieveUpdatedBill.getTotalValue()+"   list of items = "+retrieveUpdatedBill.getLineItems());
 
 	}
 

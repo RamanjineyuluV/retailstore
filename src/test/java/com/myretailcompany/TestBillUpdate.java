@@ -12,39 +12,39 @@ import org.springframework.boot.test.autoconfigure.json.JsonTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.myretailcompany.rest.controller.order.beans.OrderUpdateInfo;
-import com.myretailcompany.rest.controller.order.beans.ProductInfoForOrder;
-import com.myretailcompany.util.OrderStatus;
+import com.myretailcompany.rest.controller.bill.beans.BillUpdateInfo;
+import com.myretailcompany.rest.controller.bill.beans.ProductInfoForBill;
+import com.myretailcompany.util.BillStatus;
 
 @RunWith(SpringRunner.class)
 @JsonTest
-public class TestOrderUpdate {
+public class TestBillUpdate {
 	
 	@Autowired
-    private JacksonTester<OrderUpdateInfo> json;
+    private JacksonTester<BillUpdateInfo> json;
 
     @Test
     public void testSerialize() throws Exception {
 
-    	OrderUpdateInfo updateInfo = createTestBean();
+    	BillUpdateInfo updateInfo = createTestBean();
 		
 		assertThat(this.json.write(updateInfo)).isEqualToJson("expected.json");
 		
 		System.out.println(this.json.write(updateInfo).toString());
     }
 
-	public OrderUpdateInfo createTestBean() {
-		OrderUpdateInfo updateInfo = new OrderUpdateInfo();
-    	updateInfo.setStatus(OrderStatus.IN_PROGRESS);
-    	List<ProductInfoForOrder> productsToBeAdded = new ArrayList<ProductInfoForOrder>();
-    	productsToBeAdded.add(new ProductInfoForOrder("ABC-abc-1234",20));
-    	productsToBeAdded.add(new ProductInfoForOrder("ABC-abc-2234",30));
-    	productsToBeAdded.add(new ProductInfoForOrder("ABC-abc-3234",10));
+	public BillUpdateInfo createTestBean() {
+		BillUpdateInfo updateInfo = new BillUpdateInfo();
+    	updateInfo.setStatus(BillStatus.IN_PROGRESS);
+    	List<ProductInfoForBill> productsToBeAdded = new ArrayList<ProductInfoForBill>();
+    	productsToBeAdded.add(new ProductInfoForBill("ABC-abc-1234",20));
+    	productsToBeAdded.add(new ProductInfoForBill("ABC-abc-2234",30));
+    	productsToBeAdded.add(new ProductInfoForBill("ABC-abc-3234",10));
     	
-    	List<ProductInfoForOrder> productsToBeRemoved=new ArrayList<ProductInfoForOrder>();
-    	productsToBeRemoved.add(new ProductInfoForOrder("ABC-abc-1235",2));
-    	productsToBeRemoved.add(new ProductInfoForOrder("ABC-abc-1236",3));
-    	productsToBeRemoved.add(new ProductInfoForOrder("ABC-abc-1237",1));
+    	List<ProductInfoForBill> productsToBeRemoved=new ArrayList<ProductInfoForBill>();
+    	productsToBeRemoved.add(new ProductInfoForBill("ABC-abc-1235",2));
+    	productsToBeRemoved.add(new ProductInfoForBill("ABC-abc-1236",3));
+    	productsToBeRemoved.add(new ProductInfoForBill("ABC-abc-1237",1));
     	
 		updateInfo.setProductsToBeAdded(productsToBeAdded);
 		updateInfo.setProductsToBeRemoved(productsToBeRemoved);

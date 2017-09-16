@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.myretailcompany.dataaccesslayer.entity.Order;
-import com.myretailcompany.rest.controller.order.beans.OrderUpdateInfo;
-import com.myretailcompany.service.OrderService;
-import com.myretailcompany.util.OrderStatus;
+import com.myretailcompany.dataaccesslayer.entity.Bill;
+import com.myretailcompany.rest.controller.bill.beans.BillUpdateInfo;
+import com.myretailcompany.service.BillService;
+import com.myretailcompany.util.BillStatus;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,82 +28,80 @@ import io.swagger.annotations.ApiResponses;
 
 @Api
 @RestController
-public class OrderController {
+public class BillController {
 	final Logger logger = LogManager.getLogger(getClass());
 	
 	@Autowired
-	private OrderService orderService;
+	private BillService billService;
 	
 	
-	@ApiOperation(produces = "application/json", value = "fetches all orders from the database")
+	@ApiOperation(produces = "application/json", value = "fetches all bills from the database")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully retrieved list")
     }
     )
-	@RequestMapping(value = "/orders", method = RequestMethod.GET)
-	public ResponseEntity<Iterable<Order>> getAllorders() {
-		return new ResponseEntity<>(orderService.getAllOrders(), HttpStatus.OK);
+	@RequestMapping(value = "/bills", method = RequestMethod.GET)
+	public ResponseEntity<Iterable<Bill>> getAllBills() {
+		return new ResponseEntity<>(billService.getAllBills(), HttpStatus.OK);
 	}
 
 	
-			
 	
-	
-	@ApiOperation(produces = "application/json", value = "fetches a particular order details")
+	@ApiOperation(produces = "application/json", value = "fetches a particular bill details")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved Order details"),
-            @ApiResponse(code = 404, message = "Order Not Found")
+            @ApiResponse(code = 200, message = "Successfully retrieved Bill details"),
+            @ApiResponse(code = 404, message = "Bill Not Found")
     }
     )
-	@RequestMapping(value = "/orders/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Order> getOrderById(@PathVariable Long id) {
-		return new ResponseEntity<>(orderService.getOrderById(id), HttpStatus.OK);
+	@RequestMapping(value = "/bills/{id}", method = RequestMethod.GET)
+	public ResponseEntity<Bill> getBillById(@PathVariable Long id) {
+		return new ResponseEntity<>(billService.getBillById(id), HttpStatus.OK);
 	}
 
 
 	
-	@ApiOperation(produces = "application/json", value = "Creates an Order and returns orderId.")
+	@ApiOperation(produces = "application/json", value = "Creates an Bill and returns billId.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Id of the order")
+            @ApiResponse(code = 200, message = "Bill details")
      }
     )
-	@RequestMapping(value = "/orders", method = RequestMethod.POST)
-	public ResponseEntity<?> createOrder() {
-		logger.info("Request recieved to create Order = " );
-		Order order =  orderService.createOrder(new Order(0.0,0,OrderStatus.IN_PROGRESS));
-		logger.info("Created Order with id = " + order.getId());
+	@RequestMapping(value = "/bills", method = RequestMethod.POST)
+	public ResponseEntity<Bill> createBill() {
+		logger.info("Request recieved to create Bill = " );
+		Bill bill =  billService.createBill(new Bill(0.0,0,BillStatus.IN_PROGRESS));
+		logger.info("Created Bill with id = " + bill.getId());
 		// Set the location header for the newly created resource
 		HttpHeaders responseHeaders = new HttpHeaders();
-		URI newPollUri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(order.getId())
+		URI newPollUri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(bill.getId())
 				.toUri();
-		logger.info("Setting header url with newly created Order= " + order.getId());
+		logger.info("Setting header url with newly created Bill= " + bill.getId());
 		responseHeaders.setLocation(newPollUri);
-		return new ResponseEntity<>("{\"id\":"+order.getId()+"}", responseHeaders, HttpStatus.CREATED);
+		return new ResponseEntity<>(bill, responseHeaders, HttpStatus.CREATED);
 	}
 
-	@ApiOperation(produces = "application/json", value = "Add or Remove products from the Order")
+	@ApiOperation(produces = "application/json", value = "Add or Remove products from the Bill")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Id of the order"),
+            @ApiResponse(code = 200, message = "Bill details"),
             @ApiResponse(code = 404, message = "Data validation error")
      }
     )
-	@RequestMapping(value = "/orders/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<?> updateOrder(@RequestBody OrderUpdateInfo orderupdateInfo, @PathVariable Long id) throws IOException {
-		Order updated = orderService.updateOrder(orderupdateInfo, id);
-		logger.info("Request recieved =  " + orderupdateInfo);
+	@RequestMapping(value = "/bills/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<?> updateBill(@RequestBody BillUpdateInfo billUpdateInfo, @PathVariable Long id) throws IOException {
+		Bill updated = billService.updateBill(billUpdateInfo, id);
+		logger.info("Request recieved =  " + billUpdateInfo);
 		return new ResponseEntity<>(updated,HttpStatus.OK);
 	}
 
 	
-	@ApiOperation(produces = "application/json", value = "Deletes Order")
+	@ApiOperation(produces = "application/json", value = "Deletes Bill")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Status of request"),
-            @ApiResponse(code = 404, message = "Order does not exist")
+            @ApiResponse(code = 404, message = "Bill does not exist")
      }
     )
-	@RequestMapping(value = "/orders/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<?> deleteOrder(@PathVariable Long id) {
-		orderService.deleteOrder(id);
+	@RequestMapping(value = "/bills/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<?> deleteBill(@PathVariable Long id) {
+		billService.deleteBill(id);
 		return new ResponseEntity<>("{\"status\": \"success\"}",HttpStatus.OK);
 	}
 	

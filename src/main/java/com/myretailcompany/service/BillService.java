@@ -10,23 +10,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.myretailcompany.dataaccesslayer.entity.LineItem;
-import com.myretailcompany.dataaccesslayer.entity.Order;
+import com.myretailcompany.dataaccesslayer.entity.Bill;
 import com.myretailcompany.dataaccesslayer.entity.Product;
 import com.myretailcompany.dataaccesslayer.repository.LineItemRepository;
-import com.myretailcompany.dataaccesslayer.repository.OrderRepository;
+import com.myretailcompany.dataaccesslayer.repository.BillRepository;
 import com.myretailcompany.dataaccesslayer.repository.ProductRepository;
 import com.myretailcompany.rest.controller.CustomException;
-import com.myretailcompany.rest.controller.order.beans.OrderUpdateInfo;
-import com.myretailcompany.rest.controller.order.beans.ProductInfoForOrder;
+import com.myretailcompany.rest.controller.bill.beans.BillUpdateInfo;
+import com.myretailcompany.rest.controller.bill.beans.ProductInfoForBill;
 import com.myretailcompany.util.ProductCategory;
 
 @Service
-public class OrderService {
+public class BillService {
 
 	final Logger logger = LogManager.getLogger(getClass());
 
 	@Autowired
-	private OrderRepository orderRepo;
+	private BillRepository billRepo;
 
 	@Autowired
 	private ProductRepository productRepo;
@@ -34,81 +34,81 @@ public class OrderService {
 	@Autowired
 	private LineItemRepository lineItemRepo;
 
-	private void verifyOrderExists(Long id) {
-		Order order = orderRepo.findOne(id);
-		if (order == null) {
-			throw new CustomException("Order with id " + id + " not found");
+	private void verifyBillExists(Long id) {
+		Bill bill = billRepo.findOne(id);
+		if (bill == null) {
+			throw new CustomException("Bill with id " + id + " not found");
 		}
-		logger.info(" Order exists with an id = " + id);
+		logger.info(" Bill exists with an id = " + id);
 	}
 
 	// Read
 
-	public Iterable<Order> getAllOrders() {
-		Iterable<Order> order = orderRepo.findAll();
+	public Iterable<Bill> getAllBills() {
+		Iterable<Bill> bill = billRepo.findAll();
 		logger.info("returning all products");
-		return order;
+		return bill;
 	}
 
-	public Order getOrderById(Long id) {
-		verifyOrderExists(id);
-		Order order = orderRepo.findOne(id);
-		return order;
+	public Bill getBillById(Long id) {
+		verifyBillExists(id);
+		Bill bill = billRepo.findOne(id);
+		return bill;
 	}
 
-	public Order createOrder(Order order) {
-		logger.info("Input recieved to create Order = " + order);
-		order = orderRepo.save(order);
-		logger.info("Created product with id = " + order.getId());
-		return order;
+	public Bill createBill(Bill bill) {
+		logger.info("Input recieved to create Bill = " + bill);
+		bill = billRepo.save(bill);
+		logger.info("Created product with id = " + bill.getId());
+		return bill;
 
 	}
 
-	public Order updateOrder(OrderUpdateInfo orderupdateInfo, Long orderId) {
+	public Bill updateBill(BillUpdateInfo billUpdateInfo, Long billId) {
 
-		logger.info("Request recieved for update of  : "+orderId);
-		if (null == orderupdateInfo) {
-			throw new CustomException("There is no information to be updated for id " + orderId); 
+		logger.info("Request recieved for update of  : "+billId);
+		if (null == billUpdateInfo) {
+			throw new CustomException("There is no information to be updated for id " + billId); 
 		}
-		verifyOrderExists(orderId);
+		verifyBillExists(billId);
 
 		logger.info("Processing products to be added");
-		if (null!= orderupdateInfo.getProductsToBeAdded()){
-			List<ProductInfoForOrder> prodToBeAdded = orderupdateInfo.getProductsToBeAdded();
-			Iterator<ProductInfoForOrder> prodToBeAddedIter = prodToBeAdded.iterator();
+		if (null!= billUpdateInfo.getProductsToBeAdded()){
+			List<ProductInfoForBill> prodToBeAdded = billUpdateInfo.getProductsToBeAdded();
+			Iterator<ProductInfoForBill> prodToBeAddedIter = prodToBeAdded.iterator();
 			while (prodToBeAddedIter.hasNext()){
-				ProductInfoForOrder pInfo = prodToBeAddedIter.next();
+				ProductInfoForBill pInfo = prodToBeAddedIter.next();
 				logger.debug("Product to be added : "+pInfo);
-				addProductToOrder(orderId, pInfo.getBarCodeId(),pInfo.getQuantity());
+				addProductToBill(billId, pInfo.getBarCodeId(),pInfo.getQuantity());
 			}
 		}
 		
 		logger.info("Processing products to be removed");
-		if (null!= orderupdateInfo.getProductsToBeRemoved()){
-			List<ProductInfoForOrder> prodToBeRemoved = orderupdateInfo.getProductsToBeRemoved();
-			Iterator<ProductInfoForOrder> prodToBeRemovedIter = prodToBeRemoved.iterator();
+		if (null!= billUpdateInfo.getProductsToBeRemoved()){
+			List<ProductInfoForBill> prodToBeRemoved = billUpdateInfo.getProductsToBeRemoved();
+			Iterator<ProductInfoForBill> prodToBeRemovedIter = prodToBeRemoved.iterator();
 			while (prodToBeRemovedIter.hasNext()){
-				ProductInfoForOrder pInfo = prodToBeRemovedIter.next();
+				ProductInfoForBill pInfo = prodToBeRemovedIter.next();
 				logger.info("Product to be removed : "+pInfo);
-				removeProductFromOrder(orderId, pInfo.getBarCodeId());
+				removeProductFromBill(billId, pInfo.getBarCodeId());
 			}
 		}
 		
-		Order order = orderRepo.findOne(orderId);
-		order.setOrderStatus(orderupdateInfo.getStatus());
-		logger.info("Computing total for the order");
-		computeTotalValues(order);
-		return order;
+		Bill bill = billRepo.findOne(billId);
+		bill.setBillStatus(billUpdateInfo.getStatus());
+		logger.info("Computing total for the bill");
+		computeTotalValues(bill);
+		return bill;
 	}
 
-	private void computeTotalValues(Order order) {
+	private void computeTotalValues(Bill bill) {
 
 		int noOfItems=0;
 		double totalValue=0;
 		double totalCost=0;
 
-		if (null!= order.getLineItems()){
-			List<LineItem> lineItems = order.getLineItems();
+		if (null!= bill.getLineItems()){
+			List<LineItem> lineItems = bill.getLineItems();
 			Iterator<LineItem> lineItemsIter = lineItems.iterator();
 			while (lineItemsIter.hasNext()){
 				LineItem li = lineItemsIter.next();
@@ -119,11 +119,11 @@ public class OrderService {
 				noOfItems++;
 			}
 		}
-		order.setNoOfItems(noOfItems);
-		order.setTotalValue(totalValue);
-		order.setTotalCost(totalCost);
-		order.setTotalTax(totalValue - totalCost);
-		orderRepo.save(order);
+		bill.setNoOfItems(noOfItems);
+		bill.setTotalValue(totalValue);
+		bill.setTotalCost(totalCost);
+		bill.setTotalTax(totalValue - totalCost);
+		billRepo.save(bill);
 	}
 
 	private double computeValueForItem(long quantity, ProductCategory productCategory, double rate) {
@@ -141,8 +141,8 @@ public class OrderService {
 		return saleValue;
 	}
 
-	private Order addProductToOrder(Long orderId, String barCodeId, int quantity) {
-		Order o1 = orderRepo.findOne(orderId);
+	private Bill addProductToBill(Long billId, String barCodeId, int quantity) {
+		Bill o1 = billRepo.findOne(billId);
 		Product selectedProduct1 = verifyIfProductExists(barCodeId);
 		
 		// create line item for a product 
@@ -150,34 +150,34 @@ public class OrderService {
 		lineItemRepo.save(l1);
 		//logger.debug("saved line item  = " + l1.getId());
 		
-		// add lineitem to order.
+		// add lineitem to bill.
 		List<LineItem> currentLineItems = o1.getLineItems();
-		if (currentLineItems != null) { // There are lineItems in the order already.
-			logger.debug("There are lineItems in the order already..Adding to list of items");
+		if (currentLineItems != null) { // There are lineItems in the bill already.
+			logger.debug("There are lineItems in the bill already..Adding to list of items");
 			LineItem existingLi =getLineItemWithBarCodeId(barCodeId, currentLineItems);
 			if (existingLi==null){ 
 			//	logger.debug("There is no lineItem for the product");
 				o1.getLineItems().add(l1); //there is no line item with existing product
 			}else{
 				long newQty= existingLi.getQuantity()+quantity;
-				//logger.debug("Product already exists in the order. Adding to the quantity. New qty = "+newQty);
-				existingLi.setQuantity(newQty); // increment the quantity of the product if it already exists in the Order.
+				//logger.debug("Product already exists in the bill. Adding to the quantity. New qty = "+newQty);
+				existingLi.setQuantity(newQty); // increment the quantity of the product if it already exists in the Bill.
 			}
 			
 		} else {
-			logger.debug("There are no line items currently in the Order..Creating new list");
+			logger.debug("There are no line items currently in the Bill..Creating new list");
 			currentLineItems = new ArrayList<LineItem>();
 			currentLineItems.add(l1);
 			o1.setLineItems(currentLineItems);
 		}
-		orderRepo.save(o1);
-		logger.debug("Product Added Successfully  to Order : " + l1.getId());
+		billRepo.save(o1);
+		logger.debug("Product Added Successfully  to Bill : " + l1.getId());
 		return o1;
 	}
 	
 	
-	private Order removeProductFromOrder(Long orderId, String barCodeId) {
-		Order o1 = orderRepo.findOne(orderId);
+	private Bill removeProductFromBill(Long billId, String barCodeId) {
+		Bill o1 = billRepo.findOne(billId);
 		List<LineItem> currentLineItems = o1.getLineItems();
 		//check if the product exists in product master
 		verifyIfProductExists(barCodeId);
@@ -194,13 +194,13 @@ public class OrderService {
 			logger.info("line item to be deleted "+lineItem);
 			currentLineItems.remove(lineItem);
 			o1.setLineItems(currentLineItems);
-			orderRepo.save(o1);
+			billRepo.save(o1);
 			//lineItemRepo.delete(lineItem);  //delete if it exists
 		} else {
-			logger.info("There are no line items currently in the Order..Cannot remove productId : "+barCodeId);
-			throw new CustomException("Problem with input data: There are no line items currently in the Order. Cannot remove product with BarCode ID " + barCodeId );
+			logger.info("There are no line items currently in the Bill..Cannot remove productId : "+barCodeId);
+			throw new CustomException("Problem with input data: There are no line items currently in the Bill. Cannot remove product with BarCode ID " + barCodeId );
 		}
-		orderRepo.save(o1);
+		billRepo.save(o1);
 		return o1;
 	}
 
@@ -230,9 +230,9 @@ public class OrderService {
 		return productsByBarCodeID.get(0);
 	}
 
-	public void deleteOrder(Long id) {
-		verifyOrderExists(id);
-		orderRepo.delete(id);
+	public void deleteBill(Long id) {
+		verifyBillExists(id);
+		billRepo.delete(id);
 	}
 
 }

@@ -1,9 +1,9 @@
 package com.myretailcompany.dataaccesslayer.repository;
 
 import org.springframework.data.repository.CrudRepository;
-import com.myretailcompany.dataaccesslayer.entity.Order;
+import com.myretailcompany.dataaccesslayer.entity.Bill;
 
-public interface OrderRepository extends CrudRepository<Order, Long>{
+public interface BillRepository extends CrudRepository<Bill, Long>{
 	
 
 }
