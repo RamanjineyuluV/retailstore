@@ -44,6 +44,11 @@ Steps to build and run locally:
 * Open commandline
 * Create a new directory called "retailstoreapp" 
 * Clone repository using following command=>   git clone https://github.com/satishpeyyety/retailstore.git .
-* Run the application through maven=> mvn spring-boot:run
-* Access and invoke APIs using url : http://localhost:8080/swagger-ui.html
+* Build the executable jar using maven=> mvn package  
+* Go to target folder => cd target
+* Run following command to start the server=> java -jar RetaileStoreApplication-0.0.1-SNAPSHOT.jar --server.port=9090 
+* Access and invoke APIs using url => http://localhost:8080/swagger-ui.html
+* Application will ask for authentication credentials during invocation of API's. Use 'bob' as user id and password.
+
+This application uses H2 database and does not persist data on application restarts. 
 
