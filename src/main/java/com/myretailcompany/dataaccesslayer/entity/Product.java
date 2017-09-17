@@ -19,13 +19,13 @@ import com.myretailcompany.util.ProductCategory;
 
 public class Product {
 
-	@NotNull
-	@Column(unique = true)
-	private String barCodeId;
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
+	
+	@NotNull
+	@Column(unique = true)
+	private String barCodeId;
 
 	@NotNull
 	private String name;
@@ -39,7 +39,6 @@ public class Product {
 
 	public Product() {
 		super();
-
 	}
 
 	public Product(String barCodeId, double rate, String name, ProductCategory productCategory) {

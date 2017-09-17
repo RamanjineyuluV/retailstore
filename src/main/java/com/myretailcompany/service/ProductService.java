@@ -7,7 +7,9 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.myretailcompany.dataaccesslayer.entity.LineItem;
 import com.myretailcompany.dataaccesslayer.entity.Product;
+import com.myretailcompany.dataaccesslayer.repository.LineItemRepository;
 import com.myretailcompany.dataaccesslayer.repository.ProductRepository;
 import com.myretailcompany.rest.controller.CustomException;
 import com.myretailcompany.rest.controller.product.beans.ProductInfo;
@@ -19,6 +21,9 @@ public class ProductService {
 
 	@Autowired
 	private ProductRepository productRepo;
+	
+	@Autowired
+	private LineItemRepository lineItemRepo;
 
 	public Product createProduct(ProductInfo productInfo) {
 		logger.info("Input recieved to create product = " + productInfo);
@@ -37,10 +42,21 @@ public class ProductService {
 
 	public void deleteProduct(Long id) {
 		verifyProductExists(id);
+		verifyLineItemExists(id);
 		productRepo.delete(id);
 	}
 
-	// Read
+	private void verifyLineItemExists(Long id) {
+		logger.info("Verifying if the a line item exists with an id = " + id);
+		List<LineItem> lineItems = lineItemRepo.findByProduct_id(id);
+		if (null!= lineItems && !lineItems.isEmpty()) {
+			logger.info("line items associated with product " + lineItems);
+			throw new CustomException("Product -  " + id + " is associated with bills. Cannot be deleted.");
+		}
+	}
+		
+		
+
 
 	public Iterable<Product> getAllProducts() {
 		Iterable<Product> products = productRepo.findAll();

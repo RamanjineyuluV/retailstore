@@ -53,6 +53,13 @@ public class ProductServiceTest {
 		Product p3 = productService.getProductById(p1.getId());
 		assertThat(p3).isNull();
 	}
+	
+	@Test(expected=CustomException.class)
+	public void testDelete(){
+		productService.deleteProduct((long)1);
+		Product p3 = productService.getProductById((long)1);
+		assertThat(p3).isNull();
+	}
 
 	
 

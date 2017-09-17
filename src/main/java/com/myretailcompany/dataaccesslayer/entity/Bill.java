@@ -2,6 +2,7 @@ package com.myretailcompany.dataaccesslayer.entity;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -22,22 +23,23 @@ import com.myretailcompany.util.BillStatus;
 
 public class Bill {
 
-	@NotNull
-	@Enumerated(EnumType.STRING)
-	private BillStatus billStatus;
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
-
-	@OneToMany(fetch = FetchType.EAGER)
-	private List<LineItem> lineItems;
+	
 	private int noOfItems;
 	private double totalCost;
 
 	private double totalTax;
 
 	private double totalValue;
+
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private BillStatus billStatus;
+
+	@OneToMany(cascade=CascadeType.REMOVE,fetch = FetchType.EAGER)
+	private List<LineItem> lineItems;
 
 	public Bill() {
 		super();
