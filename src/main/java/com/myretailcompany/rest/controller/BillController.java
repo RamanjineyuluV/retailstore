@@ -25,7 +25,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
-@Api(value = "onlinestore")
+@Api(value = "onlinestore",description="Manage Bills")
 @RestController
 public class BillController {
 	@Autowired
@@ -33,7 +33,7 @@ public class BillController {
 
 	final Logger logger = LogManager.getLogger(getClass());
 
-	@ApiOperation(produces = "application/json", value = "Creates an Bill and returns billId.")
+	@ApiOperation(produces = "application/json", value = "Creates an Bill and returns an id.")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Bill details") })
 	@RequestMapping(value = "/bills", method = RequestMethod.POST)
 	public ResponseEntity<Bill> createBill() {

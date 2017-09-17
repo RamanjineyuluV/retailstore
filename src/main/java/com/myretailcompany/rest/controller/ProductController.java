@@ -30,7 +30,7 @@ import io.swagger.annotations.ApiResponses;
 // Entity Beans are used and returned by this call to web layer. Ideally they should be different.
 
 @RestController
-@Api(value = "onlinestore")
+@Api(value = "onlinestore",description="Manage Products")
 public class ProductController {
 
 	final Logger logger = LogManager.getLogger(getClass());
