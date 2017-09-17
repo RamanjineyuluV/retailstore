@@ -31,9 +31,7 @@ Client can add/update/modify products and orders using the REST endpoints.Below 
 # How to run the application locally?
 
 Pre-requisites to run application are Java, Maven and Git. Application can be run locally in following ways:
-1) Download the jar from Git and run with command:java -jar RetaileStoreApplication-0.0.1-SNAPSHOT.jar
-
-2) Build and run locally:
+ Build and run locally:
 * Create a new directory called "retailstoreapp" 
 * Clone repository using following command:git clone https://github.com/satishpeyyety/retailstore.git .
 * Run the application through maven: mvn spring-boot:run
