@@ -31,14 +31,14 @@ Client can add/update/modify products and orders using the REST endpoints.Below 
 # How to run the application locally?
 
 Pre-requisites to run application are Java, Maven and Git. 
-Installation instructions for Maven are available at https://maven.apache.org/install.html
-Java can be installed from http://www.oracle.com/technetwork/java/javase/downloads/index.html
-Latest Git version can be installed from https://git-scm.com/downloads
+*  Installation instructions for Maven are available at https://maven.apache.org/install.html
+*  Java can be installed from http://www.oracle.com/technetwork/java/javase/downloads/index.html
+*  Latest Git version can be installed from https://git-scm.com/downloads
 
 This program and instructions have been tested on following versions on Windows laptop.
-Apache Maven 3.5.0 
-Java version: 1.8.0_131
-git version 2.9.0.windows.1
+*  Apache Maven 3.5.0 
+*  Java version: 1.8.0_131
+*  git version 2.9.0.windows.1
 
 Steps to build and run locally:
 * Open commandline
@@ -46,7 +46,8 @@ Steps to build and run locally:
 * Clone repository using following command=>   git clone https://github.com/satishpeyyety/retailstore.git .
 * Build the executable jar using maven=> mvn package  
 * Go to target folder => cd target
-* Run following command to start the server=> java -jar RetaileStoreApplication-0.0.1-SNAPSHOT.jar --server.port=9090 
+* Run following command to start the server on port 8080=> java -jar RetaileStoreApplication-0.0.1-SNAPSHOT.jar 
+* Optionally, one can configure port using commandline parameter => --server.port=9090 
 * Access and invoke APIs using url => http://localhost:8080/swagger-ui.html
 * Application will ask for authentication credentials during invocation of API's. Use 'bob' as user id and password.
 
