@@ -30,9 +30,20 @@ Client can add/update/modify products and orders using the REST endpoints.Below 
 
 # How to run the application locally?
 
-Pre-requisites to run application are Java, Maven and Git. Application can be run locally in following ways:
- Build and run locally:
+Pre-requisites to run application are Java, Maven and Git. 
+Installation instructions for Maven are available at https://maven.apache.org/install.html
+Java can be installed from http://www.oracle.com/technetwork/java/javase/downloads/index.html
+Latest Git version can be installed from https://git-scm.com/downloads
+
+This program and instructions have been tested on following versions on Windows laptop.
+Apache Maven 3.5.0 
+Java version: 1.8.0_131
+git version 2.9.0.windows.1
+
+Steps to build and run locally:
+* Open commandline
 * Create a new directory called "retailstoreapp" 
-* Clone repository using following command:git clone https://github.com/satishpeyyety/retailstore.git .
-* Run the application through maven: mvn spring-boot:run
+* Clone repository using following command=>   git clone https://github.com/satishpeyyety/retailstore.git .
+* Run the application through maven=> mvn spring-boot:run
 * Access and invoke APIs using url : http://localhost:8080/swagger-ui.html
+
