@@ -1,7 +1,7 @@
 # Introduction: 
 This project consists of RESTful services that implement a checkout counter for an online retail store that scans products and generates itemized bill.
 
-It provides services for managing products and orders.  Products can be confifured with rate and category (A,B or C). Sales tax is applied based on the category of the product:
+It provides services for managing products and orders.  Products can be configured with rate and category (A,B or C). Sales tax is applied based on the category of the product:
 * Category A - 10%
 * Category B - 20%
 * Category C- 0%
@@ -16,7 +16,7 @@ Client can add/update/modify products and orders using the REST endpoints.Below 
 *  GET /products/{id} - fetch a specific product
 *  POST /products - Creates a new product based on request JSON
 *  PUT /products/{id} - Updates product data based on request JSON
-*  DELETE /products/{id} - Delete an existing product
+*  DELETE /products/{id} - Delete an existing product if it is not associated with a bill.
 
 
 ## Bills
