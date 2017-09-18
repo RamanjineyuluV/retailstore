@@ -28,17 +28,23 @@ Client can add/update/modify products and orders using the REST endpoints.Below 
 
  These REST end points are secured using basic authentication mechanism. Code uses in-memory repository with 'bob' as single user.
 
+# About Implementation
+
+This application has been using SpringBoot as it provides a wide variety of features that aid development and maintainence. Some features that were utilised were: Spring Security, Spring Data/JPA and starters.
+
+This program and instructions have been tested on following versions on Windows laptop.
+*  Apache Maven 3.5.0 
+*  Java version: 1.8.0_131
+*  git version 2.9.0.windows.1
+
+
+
 # How to run the application locally?
 
 Pre-requisites to run application are Java, Maven and Git. 
 *  Installation instructions for Maven are available at https://maven.apache.org/install.html
 *  Java can be installed from http://www.oracle.com/technetwork/java/javase/downloads/index.html
 *  Latest Git version can be installed from https://git-scm.com/downloads
-
-This program and instructions have been tested on following versions on Windows laptop.
-*  Apache Maven 3.5.0 
-*  Java version: 1.8.0_131
-*  git version 2.9.0.windows.1
 
 Steps to build and run locally:
 * Open commandline
